@@ -39,13 +39,14 @@ The next step is to extract the CB (cell barcodes) and UMI from Read 1 and add i
 
 The most basic form of this is executed with:
 ```sh
-umi_tools extract --bc-pattern=CCCCCCCCCCCCCCCCNNNNNNNNNN \
-                  --stdin hgmm_100_R1.fastq.gz \
-                  --stdout hgmm_100_R1_extracted.fastq.gz \
-                  --read2-in hgmm_100_R2.fastq.gz \
-                  --read2-out=hgmm_100_R2_extracted.fastq.gz \
+File=$1
+umi_tools extract --bc-pattern CCCCCCCCCCCCCCCCNNNNNNNNNNNN \
+                  --stdin ${File}_1.fastq.gz \
+                  --stdout /dev/null \
+                  --read2-in ${File}_2.fastq.gz \
+                  --read2-out ${File}_2.fq.gz \
                   --filter-cell-barcode \
-                  --whitelist=whitelist.tsv
+                  --whitelist whitelist.tsv
 ```
 3. 
 
