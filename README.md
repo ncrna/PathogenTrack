@@ -12,7 +12,6 @@ Before running Pathogen-Track, several dependencies must be installed :
 conda install -c bioconda -c conda-forge umi_tools
 ```
 or
-
 ```sh
 pip install umi_tools
 ```
