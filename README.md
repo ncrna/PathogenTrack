@@ -14,8 +14,14 @@ or
 ```sh
 pip install umi_tools
 ```
+## Prepare the database
+Download [**taxdump**](ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz). 
+```sh
+wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
+tar zxf taxdump.tar.gz
+grep -wE 'forma|forma specialis|varietas|subspecies|strain|species' nodes.dmp | cut -f 1 > taxid
 
-
+```
 ## Tutorial
 
 ### Pre-processing of the scRNA-seq data
