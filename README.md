@@ -20,20 +20,18 @@ pip install umi_tools
 Tutorial
 -------------
 
-Pre-processing of the scRNA-seq data
+## Pre-processing of the scRNA-seq data
 ----
 Before running this tutorial, you must run cellranger or other tools to quant the gene expression of single cells. We take cellranger as an example:
 you got an barcodes.tsv in the output, such as:
 
-
-
-1. Prepare the whitelist file
+###1. Prepare the whitelist file
 
 ```sh
 sed 's/-.*//' barcodes.tsv > whitelist.tsv
 ```
 
-2. Extract the barcodes and filter the reads
+###2. Extract the barcodes and filter the reads
 
 The next step is to extract the CB (cell barcodes) and UMI from Read 1 and add it to the Read 2 read name. We will also filter out reads that do not match one of the accepted cell barcode.
 
@@ -48,10 +46,10 @@ umi_tools extract --bc-pattern CCCCCCCCCCCCCCCCNNNNNNNNNNNN \
                   --filter-cell-barcode \
                   --whitelist whitelist.tsv
 ```
-3. 
+###3. 
 
 
-2. Extract the UMIs
+###4. Extract the UMIs
 UMIs are strings of random nucleotides attached to the start of reads. Before the reads are mapped the random nucleotides must be removed from the reads, but the sequence must be kept. The 'extract' command of UMI-Tools moves the UMI from the read to the read name.
 
 Cell barcodes are short nucleotide sequences, very much like UMIs, except instead of identifying independent molecules, they identify independent cells. We generally observe more of them in an experiment than there were cells. This could be for several reasons, including sequencing or PCR errors and the sequencing of empty droplets or those containing contaminants. Thus we must identify which cell barcodes we wish to use downstream. UMI-Tools whitelist command is used to produce a list of CB to use downstream.
