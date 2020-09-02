@@ -23,10 +23,10 @@ pip install umi_tools
 Before running this tutorial, you must run cellranger or other tools to quant the gene expression of single cells. We take cellranger as an example:
 you got an barcodes.tsv in the output, such as:
 
-#### 1. Prepare the whitelist file
+#### 1. Prepare the barcode file
 
 ```sh
-sed 's/-.*//' barcodes.tsv > whitelist.tsv
+sed 's/-.*//' barcodes.tsv > Input_barcodes.tsv
 ```
 
 #### 2. Extract the barcodes and filter the reads
@@ -35,14 +35,13 @@ The next step is to extract the CB (cell barcodes) and UMI from Read 1 and add i
 
 The most basic form of this is executed with:
 ```sh
-File=$1
 umi_tools extract --bc-pattern CCCCCCCCCCCCCCCCNNNNNNNNNNNN \
-                  --stdin ${File}_1.fastq.gz \
+                  --stdin Input_1.fastq.gz \
                   --stdout /dev/null \
-                  --read2-in ${File}_2.fastq.gz \
-                  --read2-out ${File}_2.fq.gz \
+                  --read2-in Input_2.fastq.gz \
+                  --read2-out Input_extracted_2.fq.gz \
                   --filter-cell-barcode \
-                  --whitelist whitelist.tsv
+                  --whitelist Input_barcodes.tsv
 ```
 #### 3. 
 
