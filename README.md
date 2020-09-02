@@ -15,13 +15,15 @@ or
 pip install umi_tools
 ```
 ## Prepare the database
-Download [**taxdump**](ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz). 
+### 1. Prepare taxons.db
 ```sh
 wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
 tar zxf taxdump.tar.gz
-grep -wE 'forma|forma specialis|varietas|subspecies|strain|species' nodes.dmp | cut -f 1 > taxid
-
+grep -wE 'forma|forma specialis|varietas|subspecies|strain|species' nodes.dmp | cut -f 1 > taxid.txt
+cut -f 1,3 names.dmp > taxid2organism.txt
+awk -F'\t' 'NR==FNR{a[$1]=$2; next}; {print $1,$1 in a ? a[$1] : "NA"}' taxid2organism.txt taxid.txt > taxons.db
 ```
+### 2. Prepare 
 ## Tutorial
 
 ### Pre-processing of the scRNA-seq data
