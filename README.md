@@ -43,7 +43,15 @@ umi_tools extract --bc-pattern CCCCCCCCCCCCCCCCNNNNNNNNNNNN \
                   --filter-cell-barcode \
                   --whitelist Input_barcodes.tsv
 ```
-#### 3. 
+#### 4. Deduplication and Quantification
+```sh
+python umi_count-v0.1.py -b SRR11680220_barcodes.tsv \
+                         -i SRR11680220.fq \
+                         -k SRR11680220.kraken \
+                         -t taxons.db \
+                         -o SRR11680220
+
+```
 
 
 #### 4. Extract the UMIs
