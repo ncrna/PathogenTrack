@@ -19,7 +19,7 @@ pip install umi_tools
 ## Tutorial
 
 ### Pre-processing of the scRNA-seq data
-----
+
 Before running this tutorial, you must run cellranger or other tools to quant the gene expression of single cells. We take cellranger as an example:
 you got an barcodes.tsv in the output, such as:
 
