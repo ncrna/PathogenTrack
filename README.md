@@ -20,7 +20,7 @@ pip install umi_tools
 wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
 tar zxf taxdump.tar.gz
 grep -wE 'forma|forma specialis|varietas|subspecies|strain|species' nodes.dmp | cut -f 1 > taxid.txt
-cut -f 1,3 names.dmp | grep 'scientific name' > taxid2organism.txt
+grep 'scientific name' names.dmp | cut -f 1,3 > taxid2organism.txt
 awk -F'\t' 'NR==FNR{a[$1]=$2; next}; {print $1"\t"a[$1]}' taxid2organism.txt taxid.txt > taxons.db
 ```
 ### 2. Prepare 
