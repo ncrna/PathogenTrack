@@ -54,23 +54,21 @@ umi_tools extract --bc-pattern CCCCCCCCCCCCCCCCNNNNNNNNNNNN \
 #### 3. Classify reads by taxon
 Kraken is a taxonomic sequence classifier that assigns taxonomic labels to NGS sequences. Kraken examines the k-mers within a query sequence and uses the information within those k-mers to query a database. That database maps k-mers to the lowest common ancestor (LCA) of all genomes known to contain a given k-mer.
 ```sh
-
+kraken2 --db minikraken_8GB_20200312 \
+        --threads 40 \
+        --report Input.kreport2 \
+        --classified-out Input_extracted.fq \
+        Input_extracted_2.fq.gz 1> Input.kraken2
+```
+```sh
+awk '$1=="C"' Input.kraken2 > Input.kraken
 ```
 
 #### 4. Deduplication and Quantification
 ```sh
-python umi_count-v0.1.py -b SRR11680220_barcodes.tsv \
-                         -i SRR11680220.fq \
-                         -k SRR11680220.kraken \
+python umi_count-v0.1.py -b Input_barcodes.tsv \
+                         -i Input_extracted.fq \
+                         -k Input.kraken \
                          -t taxons.db \
-                         -o SRR11680220
-
+                         -o Input
 ```
-
-
-#### 4. Extract the UMIs
-UMIs are strings of random nucleotides attached to the start of reads. Before the reads are mapped the random nucleotides must be removed from the reads, but the sequence must be kept. The 'extract' command of UMI-Tools moves the UMI from the read to the read name.
-
-Cell barcodes are short nucleotide sequences, very much like UMIs, except instead of identifying independent molecules, they identify independent cells. We generally observe more of them in an experiment than there were cells. This could be for several reasons, including sequencing or PCR errors and the sequencing of empty droplets or those containing contaminants. Thus we must identify which cell barcodes we wish to use downstream. UMI-Tools whitelist command is used to produce a list of CB to use downstream.
-
-whitelist currently allows the common method of taking the top X most abundant barcodes. X can be estimated automatically from the data using the knee method (for more detail see this blog post). However, it is just an estimate and for this data we've been told that there were 100 cells, so we can just supply that number (see variations section for performing the estimation for data sets where cell number is unknown).
