@@ -14,6 +14,17 @@ or
 ```sh
 pip install umi_tools
 ```
+2. Install [**kraken2**]
+
+```sh
+conda install kraken2
+```
+
+```sh
+wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
+tar zxf minikraken_8GB_202003.tgz
+```
+
 ## Prepare the database
 ### 1. Prepare taxons.db
 ```sh
