@@ -14,7 +14,7 @@ or
 ```sh
 pip install umi_tools
 ```
-2. Install [**kraken2**]
+2. Install [**kraken2**](https://github.com/DerrickWood/kraken2)
 
 ```sh
 conda install kraken2
@@ -25,8 +25,7 @@ wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 tar zxf minikraken_8GB_202003.tgz
 ```
 
-## Prepare the database
-### 1. Prepare taxons.db
+3. Create taxons.db database
 ```sh
 wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
 tar zxf taxdump.tar.gz
@@ -34,7 +33,7 @@ grep -wE 'forma|forma specialis|varietas|subspecies|strain|species' nodes.dmp | 
 grep 'scientific name' names.dmp | cut -f 1,3 > taxid2organism.txt
 awk -F'\t' 'NR==FNR{a[$1]=$2; next}; {print $1"\t"a[$1]}' taxid2organism.txt taxid.txt > taxons.db
 ```
-### 2. Prepare 
+
 ## Tutorial
 
 ### Pre-processing of the scRNA-seq data
