@@ -36,8 +36,6 @@ awk -F'\t' 'NR==FNR{a[$1]=$2; next}; {print $1"\t"a[$1]}' taxid2organism.txt tax
 
 ## Tutorial
 
-### Pre-processing of the scRNA-seq data
-
 Before running this tutorial, you must run cellranger or other tools to quant the gene expression of single cells. We take cellranger as an example:
 you got an barcodes.tsv in the output, such as:
 
