@@ -27,8 +27,8 @@ tar zxf minikraken_8GB_202003.tgz
 
 3. Create taxons.db database
 ```sh
-wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump.tar.gz
-tar zxf taxdump.tar.gz
+wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump_archive/taxdmp_2020-09-01.zip
+unzip taxdmp_2020-09-01.zip
 grep -wE 'forma|forma specialis|varietas|subspecies|strain|species' nodes.dmp | cut -f 1 > taxid.txt
 grep 'scientific name' names.dmp | cut -f 1,3 > taxid2organism.txt
 awk -F'\t' 'NR==FNR{a[$1]=$2; next}; {print $1"\t"a[$1]}' taxid2organism.txt taxid.txt > taxons.db
