@@ -25,6 +25,11 @@ wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 tar zxf minikraken_8GB_202003.tgz
 ```
 
+```sh
+git clone https://github.com/DerrickWood/kraken2.git
+for i in kraken2/data/*.fa; do kraken2-build --add-to-library $i --db minikraken_8GB_20200312; done
+```
+
 3. Create taxons.db database
 ```sh
 wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump_archive/taxdmp_2020-09-01.zip
