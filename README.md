@@ -3,9 +3,9 @@ PathogenTrack is a python-based computational software based on **---** and **--
 
 ## Installation
 
-Before running Pathogen-Track, several dependencies must be installed :
+#### Before running Pathogen-Track, several dependencies must be installed :
 
-0. Installing Miniconda on Linux Platform. For details, please refer to [Miniconda Installation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent).
+0 . Installing Miniconda on Linux Platform. For details, please refer to [Miniconda Installation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent).
 ```sh
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
