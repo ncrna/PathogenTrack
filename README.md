@@ -5,6 +5,12 @@ PathogenTrack is a python-based computational software based on **---** and **--
 
 Before running Pathogen-Track, several dependencies must be installed :
 
+0. Installing Miniconda on Linux Platform. For details, please refer to [Miniconda Installation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent).
+```sh
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+bash Miniconda3-latest-Linux-x86_64.sh
+```
+
 1 . The first step is to install [**UMI-tools**](https://github.com/CGATOxford/UMI-tools). Umi_tools is dependent on python>=3.5, numpy, pandas, scipy, cython, pysam, future, regex and matplotlib, to install it you should start an ssh session and type :
 
 ```sh
