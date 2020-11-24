@@ -133,4 +133,4 @@ python PathogenTrack.py -b barcodes.tsv \
 
 ## Questions
 
-For questions and suggestions about the pipeline or the code, please contact [rstatistics@sjtu.edu.cn](mailto:rstatistics@sjtu.edu.cn). We will try our best to provide support, address new issues, and keep improving this software.
+For questions and suggestions about the pipeline or the code, please contact [rstatistics@sjtu.edu.cn](mailto:rstatistics@sjtu.edu.cn) and [ty12260@rjh.com.cn](mailto:ty12260@rjh.com.cn). We will try our best to provide support, address new issues, and keep improving this software.
