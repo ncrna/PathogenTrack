@@ -1,6 +1,10 @@
 # PathogenTrack
 PathogenTrack is a python-based computational software based on **UMI-tools** and **Kraken2** developed to detect and identify pathogenic microorganisms from single-cell RNA-sequencing (scRNA-seq) raw data. We have tested PathogenTrack on various scRNA-seq datasets derived from human normal and tumor lung samples as described in our paper *'Detecting and studying pathogenic microorganisms invasion at the single-cell resolution using PathogenTrack'*.
 
+### System Requirements
+
+PathogenTrack has been tested on Linux platform with CentOS 7 operation system. The RAM is 120 GB, with 40 computational threads.
+
 ## Installation
 
 ### PathogenTrack can be installed in two steps:
@@ -126,6 +130,7 @@ python PathogenTrack.py -b barcodes.tsv \
                         -o Input
 ```
 *Note:* It may take 4-6 hours to complete one sample, and it depends on the performance of computational resources and the size of the raw single-cell data.
+
 ## Questions
 
 For questions and suggestions about the pipeline or the code, please contact [rstatistics@sjtu.edu.cn](rstatistics@sjtu.edu.cn). We will try our best to provide support, address new issues, and keep improving this software.
