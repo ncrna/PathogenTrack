@@ -33,7 +33,7 @@ STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691
      --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf \
      --sjdbOverhang 100
 ```
-*Note* It was executed on a CentOS 7 system with 120GiB of memory, and cost 150GiB disk space in 10 hours.
+*Note:* It was executed on a CentOS 7 system with 120GiB of memory, and cost 150GiB disk space in 10 hours.
 
 ### 2. Prepare Kraken2 database
 
