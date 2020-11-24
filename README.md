@@ -3,7 +3,7 @@ PathogenTrack is a python-based computational software based on **UMI-tools** an
 
 ## Installation
 
-#### PathogenTrack can be installed in two steps:
+### PathogenTrack can be installed in two steps:
 
 1 . Installing Miniconda on Linux Platform. For details, please refer to [Miniconda Installation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent).
 ```sh
@@ -55,7 +55,7 @@ awk -F'\t' 'NR==FNR{a[$1]=$2; next}; {print $1"\t"a[$1]}' taxid2organism.txt tax
 
 Before running this tutorial, you should run cellranger or other tools (e.g., umi_tools) to get the single cells' gene expression matrix. Here, we took cellranger results as an example:
 
-#### 1. Modify the barcode file
+### 1. Modify the barcode file
 
 If cellranger output files are in gzip format, please decompress them first. Then remove the suffix '-1' of the barcode file: 
 
@@ -63,7 +63,7 @@ If cellranger output files are in gzip format, please decompress them first. The
 sed -i 's/-.*//' barcodes.tsv > barcodes.tsv
 ```
 
-#### 2. Extract the barcodes and filter the reads
+### 2. Extract the barcodes and filter the reads
 
 The next step is to extract the CB (cell barcodes) and UMI from Read 1 and add it to the read name of Read 2. We also filter out reads of which the UMI does not exist in the accepted cell barcodes. 
 **IMPORTANT**: The Read 1 here is made up of 16 bp CB and 12 bp UMI, so the --bc-pattern is CCCCCCCCCCCCCCCCNNNNNNNNNNNN (16C and 12N). Users must adjust the pattern with their own Read 1 accordingly.
@@ -78,7 +78,7 @@ umi_tools extract --bc-pattern CCCCCCCCCCCCCCCCNNNNNNNNNNNN \
                   --filter-cell-barcode \
                   --whitelist barcodes.tsv
 ```
-#### 3. Filter out reads with low quality or low complexity
+### 3. Filter out reads with low quality or low complexity
 
 The barcoded reads with low quality and low complexity were filtered out using fastp with the following command:
 
@@ -86,7 +86,7 @@ The barcoded reads with low quality and low complexity were filtered out using f
 fastp --thread 8 --low_complexity_filter -i Input_extracted_R2.fq.gz -o Input_R2.fp.fq.gz
 ```
 
-#### 4. Filter out reads from the host reference genome
+### 4. Filter out reads from the host reference genome
 
 Then we aligned the quality-filtered Read 2 from step3 to the human reference genome using STAR under the following command:
 
@@ -100,7 +100,7 @@ We renamed the unmapped reads with 'Input_rmHost.fq':
 ```sh
 mv Input_Unmapped.out.mate1 Input_rmHost.fq
 ```
-#### 5. Classify unmapped reads by taxonomy
+### 5. Classify unmapped reads by taxonomy
 Kraken2 is an excellent taxonomic sequence classifier that assigns taxonomic labels to NGS sequences. Here we employed it to classify the taxonomy of the unmapped reads:
 ```sh
 kraken2 --db minikraken_8GB_20200312 \
@@ -114,7 +114,7 @@ Only classified entries are kept for further use:
 awk '$1=="C"' Input.kraken2 > Input.kraken
 ```
 
-#### 6. Reads de-Duplication and Quantification
+### 6. Reads de-Duplication and Quantification
 
 The script 'PathogenTrack.py' was designed for reads de-duplication and pathogen species' abundance quantification at the single-cell level. It output a matrix with rows represent pathogen species and columns represent cells.
 
