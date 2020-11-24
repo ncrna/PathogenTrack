@@ -19,13 +19,19 @@ conda env create -f environment.yml
 ## Databases Preparation
 
 ### 1. Prepare Human genome database
-
+Download Human GRCh38 genome and gtf file.
 ```sh
 wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
 gzip -d Homo_sapiens.GRCh38.dna.toplevel.fa.gz
 wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf.gz
 gzip -d Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf.gz
-STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691637 --genomeDir ./ --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf --sjdbOverhang 100
+```
+
+Build STAR Index.
+```sh
+STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691637 --genomeDir ./ \
+     --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf \
+     --sjdbOverhang 100
 ```
 This was performed on CentOS7, 120G RAM, 150G Disk, in 10 hours.
 
