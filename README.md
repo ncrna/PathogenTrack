@@ -18,8 +18,8 @@ conda env create -f environment.yml
 
 ## Databases Preparation
 
-### 1. Prepare Human genome database
-Download Human GRCh38 genome and genome annotation file, then unzip them:
+### 1. Prepare the Human genome database
+Download the Human GRCh38 genome and genome annotation file, and then decompress them:
 ```sh
 wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
 gzip -d Homo_sapiens.GRCh38.dna.toplevel.fa.gz
@@ -33,7 +33,7 @@ STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691
      --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf \
      --sjdbOverhang 100
 ```
-It was executed on a CentOS 7 system with 120GiB of memory, and cost 150GiB disk space in 10 hours.
+*Note* It was executed on a CentOS 7 system with 120GiB of memory, and cost 150GiB disk space in 10 hours.
 
 ### 2. Prepare Kraken2 database
 
@@ -41,7 +41,7 @@ It was executed on a CentOS 7 system with 120GiB of memory, and cost 150GiB disk
 wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 tar zxf minikraken_8GB_202003.tgz
 ```
-### 3. Prepare Taxon database
+### 3. Prepare Taxonomy database
 ```sh
 wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump_archive/taxdmp_2020-09-01.zip
 unzip taxdmp_2020-09-01.zip
@@ -50,7 +50,6 @@ grep -wE 'forma|forma specialis|varietas|subspecies|strain|species' nodes.dmp | 
 grep 'scientific name' names.dmp | cut -f 1,3 > taxid2organism.txt
 awk -F'\t' 'NR==FNR{a[$1]=$2; next}; {print $1"\t"a[$1]}' taxid2organism.txt taxid.txt > taxons.db
 ```
-
 
 ## Tutorial
 
@@ -115,7 +114,7 @@ Only classified entries are kept for further use:
 awk '$1=="C"' Input.kraken2 > Input.kraken
 ```
 
-#### 6. Deduplication and Quantification
+#### 6. Reads de-Duplication and Quantification
 
 The script 'PathogenTrack.py' was designed for reads de-duplication and pathogen species' abundance quantification at the single-cell level. It output a matrix with rows represent pathogen species and columns represent cells.
 
