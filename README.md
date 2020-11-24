@@ -11,36 +11,44 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
 
-2.  Installing PathogenTrack.
+2 . Installing PathogenTrack.
 ```sh
 conda env create -f environment.yml
 ```
 
 ## Databases Preparation
 
+### 1. Prepare Human genome database
+
+```sh
+wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
+gzip -d Homo_sapiens.GRCh38.dna.toplevel.fa.gz
+wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf.gz
+gzip -d Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf.gz
+STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691637 --genomeDir ./ --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf --sjdbOverhang 100
+```
+This was performed on CentOS7, 120G RAM, 150G Disk, in 10 hours.
+
+### 2. Prepare Kraken2 database
+
 ```sh
 wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 tar zxf minikraken_8GB_202003.tgz
 ```
-
-```sh
-git clone https://github.com/DerrickWood/kraken2.git
-for i in kraken2/data/*.fa; do kraken2-build --add-to-library $i --db minikraken_8GB_20200312; done
-```
-
-3. Create taxons.db database
+### 3. Prepare Taxon database
 ```sh
 wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump_archive/taxdmp_2020-09-01.zip
 unzip taxdmp_2020-09-01.zip
+# only species-level was kept for further use
 grep -wE 'forma|forma specialis|varietas|subspecies|strain|species' nodes.dmp | cut -f 1 > taxid.txt
 grep 'scientific name' names.dmp | cut -f 1,3 > taxid2organism.txt
 awk -F'\t' 'NR==FNR{a[$1]=$2; next}; {print $1"\t"a[$1]}' taxid2organism.txt taxid.txt > taxons.db
 ```
 
+
 ## Tutorial
 
-Before running this tutorial, you must run cellranger or other tools to quant the gene expression of single cells. We take cellranger as an example:
-you got an barcodes.tsv in the output, such as:
+Before running this tutorial, you must run cellranger or other tools (eg., umi_tools) to quant the gene expression of single cells. We take cellranger as an example:
 
 #### 1. Prepare the barcode file
 
