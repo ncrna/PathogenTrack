@@ -125,7 +125,7 @@ python PathogenTrack.py -b barcodes.tsv \
                         -t taxons.db \
                         -o Input
 ```
-
+*Note:* It may take 4-6 hours to complete one sample, and it depends on the performance of computational resources and the size of the raw single-cell data.
 ## Questions
 
 For questions and suggestions about the pipeline or the code, please contact [rstatistics@sjtu.edu.cn](rstatistics@sjtu.edu.cn). We will try our best to provide support, address new issues, and keep improving this software.
