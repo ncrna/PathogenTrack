@@ -15,21 +15,6 @@ bash Miniconda3-latest-Linux-x86_64.sh
 ```sh
 conda env create -f environment.yml
 ```
-#### You can also install PathogenTrack accroding to the following steps:
-1 . Install [**UMI-tools**](https://github.com/CGATOxford/UMI-tools). Umi_tools is dependent on python>=3.5, numpy, pandas, scipy, cython, pysam, future, regex and matplotlib, to install it you should start an ssh session and type :
-
-```sh
-conda install -c bioconda -c conda-forge umi_tools
-```
-or
-```sh
-pip install umi_tools
-```
-2.  Install [**kraken2**](https://github.com/DerrickWood/kraken2)
-
-```sh
-conda install kraken2
-```
 
 ## Databases Preparation
 
