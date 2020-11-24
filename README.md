@@ -1,17 +1,22 @@
 # PathogenTrack
-PathogenTrack is a python-based computational software based on **UMI-tools** and **Kraken2** developped to detect and identify pathogenic microorganisms from single-cell RNA-sequencing (scRNA-seq) raw data. This tool was tested on various scRNA-seq datasets derived from human tumor samples as described in our paper *'Detecting and studying pathogenic microorganisms invasion at the single-cell resolution using PathogenTrack'*.
+PathogenTrack is a python-based computational software based on **UMI-tools** and **Kraken2** developped to detect and identify pathogenic microorganisms from single-cell RNA-sequencing (scRNA-seq) raw data. This tool was tested on various scRNA-seq datasets derived from human normal and tumor lung samples as described in our paper *'Detecting and studying pathogenic microorganisms invasion at the single-cell resolution using PathogenTrack'*.
 
 ## Installation
 
-#### Before running PathogenTrack, several dependencies must be installed :
+#### PathogenTrack can be installed in two steps:
 
-0 . Installing Miniconda on Linux Platform. For details, please refer to [Miniconda Installation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent).
+1 . Installing Miniconda on Linux Platform. For details, please refer to [Miniconda Installation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent).
 ```sh
 wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
 
-1 . The first step is to install [**UMI-tools**](https://github.com/CGATOxford/UMI-tools). Umi_tools is dependent on python>=3.5, numpy, pandas, scipy, cython, pysam, future, regex and matplotlib, to install it you should start an ssh session and type :
+2.  Installing PathogenTrack.
+```sh
+conda env create -f environment.yml
+```
+#### You can also install PathogenTrack accroding to the following steps:
+1 . Install [**UMI-tools**](https://github.com/CGATOxford/UMI-tools). Umi_tools is dependent on python>=3.5, numpy, pandas, scipy, cython, pysam, future, regex and matplotlib, to install it you should start an ssh session and type :
 
 ```sh
 conda install -c bioconda -c conda-forge umi_tools
@@ -20,11 +25,13 @@ or
 ```sh
 pip install umi_tools
 ```
-2. Install [**kraken2**](https://github.com/DerrickWood/kraken2)
+2.  Install [**kraken2**](https://github.com/DerrickWood/kraken2)
 
 ```sh
 conda install kraken2
 ```
+
+## Databases Preparation
 
 ```sh
 wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
