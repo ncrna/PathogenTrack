@@ -49,7 +49,6 @@ wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 tar zxf minikraken_8GB_202003.tgz
 ```
 ### 3. Prepare Taxonomy database
-We provided taxonomy database (taxons.db) in the data folder. Users can make taxonomy database according to the following commands.
 ```sh
 wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump_archive/taxdmp_2020-09-01.zip
 unzip taxdmp_2020-09-01.zip
