@@ -19,7 +19,10 @@ bash Miniconda3-latest-Linux-x86_64.sh
 ```sh
 conda env create -f environment.yml
 ```
-
+3. Get PathogenTrack tool
+```sh
+git clone git@github.com:rstatistics/PathogenTrack.git
+```
 ## Databases Preparation
 
 ### 1. Prepare the Human genome database
@@ -46,6 +49,7 @@ wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 tar zxf minikraken_8GB_202003.tgz
 ```
 ### 3. Prepare Taxonomy database
+We provided taxonomy database (taxons.db) in the data folder. Users can make taxonomy database according to the following commands.
 ```sh
 wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump_archive/taxdmp_2020-09-01.zip
 unzip taxdmp_2020-09-01.zip
@@ -55,80 +59,24 @@ grep 'scientific name' names.dmp | cut -f 1,3 > taxid2organism.txt
 awk -F'\t' 'NR==FNR{a[$1]=$2; next}; {print $1"\t"a[$1]}' taxid2organism.txt taxid.txt > taxons.db
 ```
 
-## Tutorial
-
+## How to use PathogenTrack?
 Before running this tutorial, you should run cellranger or other tools (e.g., umi_tools) to get the single cells' gene expression matrix. Here, we took cellranger results as an example:
-
-### 1. Modify the barcode file
-
-If cellranger output files are in gzip format, please decompress them first. Then remove the suffix '-1' of the barcode file: 
-
+### Example 1:
+Let's take the raw 10X sequencing data as an example:
 ```sh
-sed -i 's/-.*//' barcodes.tsv > barcodes.tsv
+conda activate PathogenTrack
+python PathogenTrack.py --bcpattern CCCCCCCCCCCCCCCCNNNNNNNNNN --read1 Input_R1.fastq.gz --read2 Input_R2.fastq.gz --barcode barcodes.tsv --thread 8 --starindex /db/human/STAR-index/ --krakendb /db/minikraken_8GB_20200312/ --taxondb taxons.db --output Input_matrix.tsv
 ```
 
-### 2. Extract the barcodes and filter the reads
-
-The next step is to extract the CB (cell barcodes) and UMI from Read 1 and add it to the read name of Read 2. We also filter out reads of which the UMI does not exist in the accepted cell barcodes. 
-**IMPORTANT**: The Read 1 here is made up of 16 bp CB and 12 bp UMI, so the --bc-pattern is CCCCCCCCCCCCCCCCNNNNNNNNNNNN (16C and 12N). Users must adjust the pattern with their own Read 1 accordingly.
-
-The most basic form of this is executed with:
+### Example 2:
+If we have extracted the CB (cell barcodes) and UMI for Read1 and added it to the read name of Read2, we can run it as follows:
 ```sh
-umi_tools extract --bc-pattern CCCCCCCCCCCCCCCCNNNNNNNNNNNN \
-                  --stdin Input_R1.fq.gz \
-                  --stdout /dev/null \
-                  --read2-in Input_R2.fq.gz \
-                  --read2-out Input_extracted_R2.fq.gz \
-                  --filter-cell-barcode \
-                  --whitelist barcodes.tsv
-```
-### 3. Filter out reads with low quality or low complexity
-
-The barcoded reads with low quality and low complexity were filtered out using fastp with the following command:
-
-```sh
-fastp --thread 8 --low_complexity_filter -i Input_extracted_R2.fq.gz -o Input_R2.fp.fq.gz
+conda activate PathogenTrack
+python PathogenTrack.py --clean Input_R2.fastq_addCB_fastp.gz --barcode barcodes.tsv --thread 8 --starindex /db/human/STAR-index/ --krakendb /db/minikraken_8GB_20200312/ --taxondb taxons.db --output Input_matrix.tsv
 ```
 
-### 4. Filter out reads from the host reference genome
+**IMPORTANT**: The Read 1 in the example is made up of 16 bp CB and 12 bp UMI, so the --bcpattern is CCCCCCCCCCCCCCCCNNNNNNNNNNNN (16C and 12N). Users must adjust the bcpattern with their own Read 1 accordingly.
 
-Then we aligned the quality-filtered Read 2 from step3 to the human reference genome using STAR under the following command:
-
-```sh
-STAR --genomeDir ./STAR-index --readFilesIn Input_R2.fp.fq.gz --readFilesCommand zcat --runThreadN 16 \
-     --outFilterMismatchNmax 6 --outSAMtype None --outFilterMultimapNmax 20 --outFilterIntronMotifs RemoveNoncanonical \
-     --quantMode - --outFileNamePrefix Input_ --outReadsUnmapped Fastx
-```
-
-We renamed the unmapped reads with 'Input_rmHost.fq':
-```sh
-mv Input_Unmapped.out.mate1 Input_rmHost.fq
-```
-### 5. Classify unmapped reads by taxonomy
-Kraken2 is an excellent taxonomic sequence classifier that assigns taxonomic labels to NGS sequences. Here we employed it to classify the taxonomy of the unmapped reads:
-```sh
-kraken2 --db minikraken_8GB_20200312 \
-        --threads 40 \
-        --report Input.kreport2 \
-        --classified-out Input_rmHost_kraken.fq \
-        Input_rmHost.fq 1> Input.kraken2
-```
-Only classified entries are kept for further use:
-```sh
-awk '$1=="C"' Input.kraken2 > Input.kraken
-```
-
-### 6. Reads de-Duplication and Quantification
-
-The script 'PathogenTrack.py' was designed for reads de-duplication and pathogen species' abundance quantification at the single-cell level. It output a matrix with rows represent pathogen species and columns represent cells.
-
-```sh
-python PathogenTrack.py -b barcodes.tsv \
-                        -i Input_rmHost.fq \
-                        -k Input.kraken \
-                        -t taxons.db \
-                        -o Input
-```
 *Note:* It may take 4-6 hours to complete one sample, and it depends on the performance of computational resources and the size of the raw single-cell data.
 
 ## Questions
