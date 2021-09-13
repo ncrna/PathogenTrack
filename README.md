@@ -1,5 +1,6 @@
 # PathogenTrack
-PathogenTrack is a python-based computational software based on **UMI-tools** and **Kraken2** developed to detect and identify pathogenic microorganisms from single-cell RNA-sequencing (scRNA-seq) raw data. We have tested PathogenTrack on various scRNA-seq datasets derived from human normal and tumor lung samples as described in our paper *'Detecting and studying pathogenic microorganisms invasion at the single-cell resolution using PathogenTrack'*.
+PathogenTrack is an unsupervised computational software that uses unmapped single-cell RNAseq reads to characterize intracellular pathogens at the single-cell level. It is a python-based script that can be used to identify and quantify intracellular pathogenic viruses and bacteria reads at the single-cell level.
+PathogenTrack has been tested on various scRNA-seq datasets derived from simulated and real datasets and performed robustly. The detailes are described in our paper *'Decoding Intracellular Pathogens of scRNA-seq experiments with PathogenTrack and SCKIT'*.
 
 ### System Requirements
 
@@ -19,7 +20,7 @@ bash Miniconda3-latest-Linux-x86_64.sh
 ```sh
 conda env create -f environment.yml
 ```
-3. Get PathogenTrack tool
+3. Get PathogenTrack
 ```sh
 git clone git@github.com:rstatistics/PathogenTrack.git
 ```
@@ -47,15 +48,6 @@ STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691
 ```sh
 wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 tar zxf minikraken_8GB_202003.tgz
-```
-### 3. Prepare Taxonomy database
-```sh
-wget ftp://ftp.ncbi.nih.gov/pub/taxonomy/taxdump_archive/taxdmp_2020-09-01.zip
-unzip taxdmp_2020-09-01.zip
-# only species-level was kept for further use
-grep -wE 'forma|forma specialis|varietas|subspecies|strain|species' nodes.dmp | cut -f 1 > taxid.txt
-grep 'scientific name' names.dmp | cut -f 1,3 > taxid2organism.txt
-awk -F'\t' 'NR==FNR{a[$1]=$2; next}; {print $1"\t"a[$1]}' taxid2organism.txt taxid.txt > taxons.db
 ```
 
 ## How to use PathogenTrack?
