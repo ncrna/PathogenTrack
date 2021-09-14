@@ -12,7 +12,7 @@ from Bio.Seq import Seq
 import argparse
 import subprocess
 
-VERSION = 'v0.5'
+VERSION = 'v0.6_20210620'
 USAGE = '''%(prog)s [options]'''
 
 def checkstatus(cmd):
@@ -110,8 +110,9 @@ def check_rank(rank):
         level = ranks.index(rank[0]) + 0.5
     return(level)
 
-def quant(project_id, barcode, input_reads, input_table, input_report, rank_level, output_reads, output_matrix): ## deduplication and quantification microbes at single-cell levels
+def quant(project_id, barcode, input_reads, input_table, input_report, min_reads, output_reads, output_matrix): ## deduplication and quantification microbes at single-cell levels
     check_dir(project_id)
+    min_reads = int(min_reads)
     barcode = project_id + '/' + barcode
     input_reads = project_id + '/' + input_reads
     input_table = project_id + '/' + input_table
@@ -132,40 +133,66 @@ def quant(project_id, barcode, input_reads, input_table, input_report, rank_leve
     level_taxname = 'root'
     last_rank = 'R'
     current_rank = 'R'
+    selected = False
+    selected_taxid = ''
+    selected_taxname = ''
+    tmp_dict = dict() # store rows containing species/strain
     with open(input_report) as freport:
         for line in freport:
+            total_count = int(line.strip().split("\t")[1])
+            rank_count = int(line.strip().split("\t")[2])
             current_rank = line.strip().split("\t")[3]
             taxid = line.strip().split("\t")[4]
             taxname = line.strip().split("\t")[5].strip()
-            #if ranks.index(rank[1]) < 7: # only consider ranks in 'G' and 'S'
-            #    continue
             if current_rank == 'U': # skip first line in report
                 continue
-            if check_rank(current_rank) > check_rank(last_rank): # changed organism
-                if check_rank(current_rank) == check_rank(rank_level):
-                    level_taxid = taxid
-                    level_taxname = taxname
-                if level_taxid != '1':
-                    Taxons[taxid] = level_taxid + '|' + level_taxname
+            if check_rank(current_rank) < check_rank(last_rank) or check_rank(current_rank) == check_rank(last_rank) == 8: # changed organism
                 last_rank = current_rank
+                if selected == True:
+                    for row in dict(sorted(tmp_dict.items(), key=lambda item: item[1], reverse=True)).keys():
+                        if not (selected_taxid and selected_taxname):
+                            selected_taxid = row.strip().split("\t")[4]
+                            selected_taxname = row.strip().split("\t")[5].strip()
+                            selected_reads = int(row.strip().split("\t")[2])
+                        tmp_taxid = row.strip().split("\t")[4]
+                        tmp_taxname = row.strip().split("\t")[5].strip()
+                        if selected_reads >= min_reads:
+                            Taxons[tmp_taxid] = selected_taxid + '|' + selected_taxname
+                            #print(tmp_taxname + ' -> ' + selected_taxname)
+                    #print("<-------------------------------------------------------------------------------------")
+                    #for x in dict(sorted(tmp_dict.items(), key=lambda item: item[1], reverse=True)).keys():
+                    #    print(x)
+                    #print("------------------------------------------------------------------------------------->\n\n\n")
+                    selected = False
+                    selected_taxid = ''
+                    selected_taxname = ''
+                    tmp_dict = dict()
+                if check_rank(current_rank) >= 8:
+                    if total_count == rank_count:
+                        selected = True
+                    tmp_dict[line] = rank_count
             else:
-                level_taxid = '1' # restore to initialized value
-                level_taxname = 'root'
                 last_rank = current_rank
-                if check_rank(current_rank) == check_rank(rank_level):
-                    level_taxid = taxid
-                    level_taxname = taxname
-                    Taxons[taxid] = level_taxid + '|' + level_taxname
-    freport.close()
+                if check_rank(current_rank) >= 8:
+                    if total_count == rank_count:
+                        selected = True
+                    tmp_dict[line] = rank_count
+        if selected == True:
+            for row in dict(sorted(tmp_dict.items(), key=lambda item: item[1], reverse=True)).keys():
+                if not (selected_taxid and selected_taxname):
+                    selected_taxid = row.strip().split("\t")[4]
+                    selected_taxname = row.strip().split("\t")[5].strip()
+                tmp_taxid = row.strip().split("\t")[4]
+                tmp_taxname = row.strip().split("\t")[5].strip()
 
-    with open(input_report) as freport:
-         for line in freport:
-            rank = line.strip().split("\t")[3]
-            taxid = line.strip().split("\t")[4]
-            #if taxid in Taxons.keys():
-            #    print(rank + "\t" + taxid + "\t" + Taxons[taxid])
-            #else:
-            #    print(rank + "\t" + taxid)
+                if selected_reads >= min_reads:
+                    Taxons[tmp_taxid] = selected_taxid + '|' + selected_taxname
+                #    print(tmp_taxname + ' -> ' + selected_taxname)
+                #print("<-------------------------------------------------------------------------------------")
+
+                #for x in dict(sorted(tmp_dict.items(), key=lambda item: item[1], reverse=True)).keys():
+                #    print(x)
+                #print("------------------------------------------------------------------------------------->\n\n\n")
     freport.close()
 
     Dict = {}
@@ -181,9 +208,8 @@ def quant(project_id, barcode, input_reads, input_table, input_report, rank_leve
             taxonomy = row.split("\t")[2]
             taxname, taxid = taxonomy.split(" (taxid ")
             taxid = taxid.split(")")[0]
-            if taxid == "9606" or taxid == "10090":
+            if taxid == "9606" or taxid == "10090" or taxid == "28384":
                 continue
-            #print("I am here!")
             if taxid not in Taxons.keys():
                 continue
             taxname = Taxons[taxid].split('|')[1]
@@ -237,19 +263,22 @@ def quant(project_id, barcode, input_reads, input_table, input_report, rank_leve
                     counts.append(gene_counts[gene][cell])
                 else:
                     counts.append(0)
-            fmatrix.write(gene + '\t' + '\t'.join(map(str, counts)) + '\n')
+            if sorted(counts, reverse=True)[0] >= 2: # remove species/strains with maximum UMIs < 2
+                positive_counts = str(sum(i > 0 for i in counts))
+                fmatrix.write(gene + '\t' + '\t'.join(map(str, counts)) + '\n')
+                print(gene + '\t' + positive_counts)
     fmatrix.close()
 
     return
 
-def count(project_id, star_index, kraken_db, barcode, read1, read2, pattern, thread, confidence, rank_level, ignore_suffix, trim_poly_x, filter_low_complexity, complexity_threshold):
+def count(project_id, star_index, kraken_db, barcode, read1, read2, pattern, thread, confidence, min_reads, ignore_suffix, trim_poly_x, filter_low_complexity, complexity_threshold):
     check_dir(project_id)
     trim(project_id, barcode, output='barcodes.tsv')
     extract(project_id, read1, read2, pattern, barcode='barcodes.tsv', output='reads_barcoded.fq.gz', ignore_suffix=ignore_suffix)
     filter(project_id, input_reads='reads_barcoded.fq.gz', thread=thread, output='reads_barcoded_clean.fq.gz', trim_poly_x=trim_poly_x, filter_low_complexity=filter_low_complexity, complexity_threshold=complexity_threshold)
     align(project_id, star_index, input_reads='reads_barcoded_clean.fq.gz', thread=thread, output='unmapped_reads.fq')
     classify(project_id, kraken_db, input_reads='unmapped_reads.fq', thread=thread, confidence=confidence, out_reads='classified_reads.fq', out_table='classified_table.txt', out_report='classified_report.txt')
-    quant(project_id, barcode='barcodes.tsv', input_reads='classified_reads.fq', input_table='classified_table.txt', input_report='classified_report.txt', rank_level=rank_level, output_reads='microbes.fa', output_matrix='microbes.tsv')
+    quant(project_id, barcode='barcodes.tsv', input_reads='classified_reads.fq', input_table='classified_table.txt', input_report='classified_report.txt', min_reads=min_reads, output_reads='microbes.fa', output_matrix='microbes.tsv')
     return(0)
 
 def get_args():
@@ -290,8 +319,8 @@ def get_args():
                         help='number of threads to use, default is 8', required=False)
     parser_count.add_argument('--confidence', action='store', default=0.11, type=float, 
                         help='confidence threshold to use [0-1], default is 0.11', required=False)
-    parser_count.add_argument('--rank_level', action='store', default='S*', choices=['F', 'F*', 'G', 'G*', 'S', 'S*'], 
-                        help='quantify reads abundance at which taxonomic level, default is "S*"', required=False)
+    parser_count.add_argument('--min_reads', action='store', default=10, 
+                        help='minimum number of reads that supports the taxonomy, default is 10', required=False)
     parser_count.add_argument('--trim_poly_x', action='store_true', 
                         help='enable polyA/T/C/G/N trimming in 3\' ends', required=False)
     parser_count.add_argument('--filter_low_complexity', action='store_true', 
@@ -390,8 +419,8 @@ def get_args():
                         help='input table file produced by "classify" command', required=False)
     parser_quant.add_argument('--input_report', action='store', default='classified_report.txt',
                         help='input report file produced by "classify" command', required=False)
-    parser_quant.add_argument('--rank_level', action='store', default='S*', choices=['F', 'F*', 'G', 'G*', 'S', 'S*'], 
-                        help='quantify reads abundance at which taxonomic level, default is "S*"', required=False)
+    parser_quant.add_argument('--min_reads', action='store', default=10, 
+                        help='minimum number of reads that supports the taxonomy, default is 10', required=False)
     parser_quant.add_argument('--output_reads', action='store', default='microbes.fa',
                         help='file to output classified reads to, default is microbes.fa', required=False)
     parser_quant.add_argument('--output_matrix', action='store', default='microbes.tsv',
@@ -406,7 +435,7 @@ def main():
         parser.parse_args(["--help"])
         sys.exit(0)
     if args.command == "count":
-        count(args.project_id, args.star_index, args.kraken_db, args.barcode, args.read1, args.read2, args.pattern, args.thread, args.confidence, args.rank_level, args.ignore_suffix, args.trim_poly_x, args.filter_low_complexity, args.complexity_threshold)
+        count(args.project_id, args.star_index, args.kraken_db, args.barcode, args.read1, args.read2, args.pattern, args.thread, args.confidence, args.min_reads, args.ignore_suffix, args.trim_poly_x, args.filter_low_complexity, args.complexity_threshold)
     elif args.command == "trim":
         trim(args.project_id, args.barcode, args.output)
     elif args.command == "extract":
@@ -418,7 +447,7 @@ def main():
     elif args.command == "classify":
         classify(args.project_id, args.kraken_db, args.input_reads, args.thread, args.confidence, args.out_reads, args.out_table, args.out_report)
     elif args.command == "quant":
-        quant(args.project_id, args.barcode, args.input_reads, args.input_table, args.input_report, args.rank_level, args.output_reads, args.output_matrix)
+        quant(args.project_id, args.barcode, args.input_reads, args.input_table, args.input_report, args.min_reads, args.output_reads, args.output_matrix)
     return
 
 if __name__ == '__main__':
