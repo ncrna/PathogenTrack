@@ -50,26 +50,23 @@ tar zxf minikraken_8GB_202003.tgz
 ```
 
 ## How to use PathogenTrack?
-Before running this tutorial, you should run cellranger or other tools (e.g., umi_tools) to get the single cells' gene expression matrix. Here, we took cellranger results as an example:
-### Example 1:
-Let's take the simulated 10X sequencing data as an example:
+Before running this tutorial, you should run `cellranger` or `alevin` to get the single cells' gene expression matrix. Here, let us take the simulated 10X sequencing data as an example:
+
+First, we use cellranger to get scRNA-seq expression matrix and valid barcodes:
+```sh
+cellranger count --id cellranger_out --transcriptom /path/to/cellranger_database/
+```
+
+Then we run PathogenTrack to identify and quantify pathogen expression at the single-cell level:
 ```sh
 conda activate PathogenTrack
-python PathogenTrack.py count --project_id TMP --pattern CCCCCCCCCCCCCCCCNNNNNNNNNN \
+python PathogenTrack.py count --project_id PathogenTrack_out --pattern CCCCCCCCCCCCCCCCNNNNNNNNNN \
                               --min_reads 10 --confidence 0.11 --star_index ~/database/STAR_index/ \
                               --kraken_db ~/database/minikraken_8GB_20200312/ --barcode barcodes.tsv \
                               --read1 simulation_S1_L001_R1_001.fastq.gz \
                               --read2 simulation_S1_L001_R2_001.fastq.gz 
 ```
-
-### Example 2:
-If we have extracted the CB (cell barcodes) and UMI for Read1 and added it to the read name of Read2, we can run it as follows:
-```sh
-conda activate PathogenTrack
-python PathogenTrack.py --clean Input_R2.fastq_addCB_fastp.gz --barcode barcodes.tsv --thread 8 --starindex /db/human/STAR-index/ --krakendb /db/minikraken_8GB_20200312/ --taxondb taxons.db --output Input_matrix.tsv
-```
-
-**IMPORTANT**: The Read 1 in the example is made up of 16 bp CB and 12 bp UMI, so the --bcpattern is CCCCCCCCCCCCCCCCNNNNNNNNNNNN (16C and 12N). Users must adjust the bcpattern with their own Read 1 accordingly.
+**IMPORTANT**: The Read 1 in the example is made up of 16 bp CB and 12 bp UMI, so the --bcpattern is CCCCCCCCCCCCCCCCNNNNNNNNNN (16C and 10N). Users must adjust the bcpattern with their own Read 1 accordingly.
 
 *Note:* It may take 4-6 hours to complete one sample, and it depends on the performance of computational resources and the size of the raw single-cell data.
 
