@@ -31,17 +31,16 @@ Download the Human GRCh38 genome and genome annotation file, and then decompress
 ```sh
 wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
 gzip -d Homo_sapiens.GRCh38.dna.toplevel.fa.gz
-wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf.gz
-gzip -d Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf.gz
+wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.gtf.gz
+gzip -d Homo_sapiens.GRCh38.101.gtf.gz
 ```
 
 Build STAR Index with the following command:
 ```sh
 STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691637 --genomeDir ./ \
-     --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf \
+     --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.gtf \
      --sjdbOverhang 100
 ```
-*Note:* It was executed on a CentOS 7 system with 120GiB of memory, and cost 150GiB disk space in 10 hours.
 
 ### 2. Prepare Kraken2 database
 
