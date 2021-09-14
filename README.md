@@ -50,7 +50,7 @@ tar zxf minikraken_8GB_202003.tgz
 ```
 
 ## How to use PathogenTrack?
-Before running this tutorial, you should run `cellranger` or `alevin` to get the single cells' gene expression matrix. Here, let us take the simulated 10X sequencing data as an example:
+Before running this tutorial, you should run `cellranger` or `alevin` to get the single cells' gene expression matrix. Here, we take the simulated 10X sequencing data as an example:
 
 First, we use cellranger to get scRNA-seq expression matrix and valid barcodes:
 ```sh
