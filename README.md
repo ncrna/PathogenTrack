@@ -55,7 +55,9 @@ Before running this tutorial, you should run cellranger or other tools (e.g., um
 Let's take the simulated 10X sequencing data as an example:
 ```sh
 conda activate PathogenTrack
-python PathogenTrack.py count --project_id TMP --pattern CCCCCCCCCCCCCCCCNNNNNNNNNN --min_reads 10 --confidence 0.11 --star_index ~/database/STAR_index/ --kraken_db ~/database/minikraken_8GB_20200312/ --barcode barcodes.tsv --read1 simulation_S1_L001_R1_001.fastq.gz --read2 simulation_S1_L001_R2_001.fastq.gz 
+python PathogenTrack.py count --project_id TMP --pattern CCCCCCCCCCCCCCCCNNNNNNNNNN --min_reads 10 \
+                              --confidence 0.11 --star_index ~/database/STAR_index/ --kraken_db ~/database/minikraken_8GB_20200312/ \
+                              --barcode barcodes.tsv --read1 simulation_S1_L001_R1_001.fastq.gz --read2 simulation_S1_L001_R2_001.fastq.gz 
 ```
 
 ### Example 2:
