@@ -1,6 +1,6 @@
 # PathogenTrack
 PathogenTrack is an unsupervised computational software that uses unmapped single-cell RNAseq reads to characterize intracellular pathogens at the single-cell level. It is a python-based script that can be used to identify and quantify intracellular pathogenic `viruses` and `bacteria` reads at the single-cell level.
-PathogenTrack has been tested on various scRNA-seq datasets derived from simulated and real datasets and performed robustly. The detailes are described in our paper *'Decoding Intracellular Pathogens of scRNA-seq experiments with PathogenTrack and SCKIT'*.
+PathogenTrack has been tested on various scRNA-seq datasets derived from simulated and real datasets and performed robustly. The detailes are described in our paper *`Decoding Intracellular Pathogens of scRNA-seq experiments with PathogenTrack and SCKIT`*.
 
 ### System Requirements
 
@@ -31,17 +31,16 @@ Download the Human GRCh38 genome and genome annotation file, and then decompress
 ```sh
 wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
 gzip -d Homo_sapiens.GRCh38.dna.toplevel.fa.gz
-wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf.gz
-gzip -d Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf.gz
+wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.gtf.gz
+gzip -d Homo_sapiens.GRCh38.101.gtf.gz
 ```
 
 Build STAR Index with the following command:
 ```sh
 STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691637 --genomeDir ./ \
-     --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.chr_patch_hapl_scaff.gtf \
+     --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.gtf \
      --sjdbOverhang 100
 ```
-*Note:* It was executed on a CentOS 7 system with 120GiB of memory, and cost 150GiB disk space in 10 hours.
 
 ### 2. Prepare Kraken2 database
 
