@@ -33,9 +33,13 @@ git clone git@github.com:rstatistics/PathogenTrack.git
 * Prepare the host reference genome STAR index:
 ```
 wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
+
 gzip -d Homo_sapiens.GRCh38.dna.toplevel.fa.gz
+
 wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.gtf.gz
+
 gzip -d Homo_sapiens.GRCh38.101.gtf.gz
+
 STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691637 --genomeDir ./ \
      --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.gtf \
      --sjdbOverhang 100
@@ -44,6 +48,7 @@ STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691
 * Prepare kraken2 database
 ```
 wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
+
 tar zxf minikraken_8GB_202003.tgz
 ```
 
@@ -54,14 +59,18 @@ The test data comes from a gastric patient sequenced by 10X Genomics technology.
 a reduced size, and you can download the test data:
 ```
 wget https://github.com/rstatistics/PathogenTrack/data/testdata.tgz
+
 wget https://github.com/rstatistics/PathogenTrack/data/cellranger_out.tgz
+
 wget https://github.com/rstatistics/PathogenTrack/data/pathogentrack_out.tgz
 ```
 
 Decompress these files, and decompress the barcodes.tsv.gz file.
 ```
 tar zxvf testdata.tgz
+
 tar zxvf cellranger_out.tgz
+
 tar zxvf cellranger_out/barcodes.tsv.gz
 ```
 
@@ -78,6 +87,7 @@ cellranger count --id=test_cellranger_out \
 Then copy the barcodes.tsv.gz file and decompress it:
 ```
 cp test_cellranger_out/outs/filtered_feature_bc_matrix/barcodes.tsv.gz .
+
 gzip -d barcodes.tsv.gz
 ```
 
@@ -93,9 +103,6 @@ python PathogenTrack.py count --project_id test_pathogentrack_out \
                               --read2 test_S1_L001_R2_001.fastq.gz 
 ```
  * Users can run step by step:
- ** a. 
-
-
 
 
 
