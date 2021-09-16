@@ -13,3 +13,119 @@ package to process scRNA data and identify and quantify pathogen species at the 
 The data used comes from a gastric patient sequenced by 10X Genomics technology ([Zhang Peng, et al. 
 *Cell reports* (2019): 1934-1947](https://pubmed.ncbi.nlm.nih.gov/31067475/)). We have subset the 
 data to reduce its size.
+
+Step 1: Install `PathogenTrack`
+-----------------------------------
+
+* Before installing `PathogenTrack`, dependencies must be installed previously, users are suggested to
+use `conda` with the following command:
+
+```
+conda env create -f environment.yml
+```
+An environment named `PathogenTrack` will be created, and the dependencies will be installed too.
+
+* Get `PathogenTrack`.
+```
+git clone git@github.com:rstatistics/PathogenTrack.git
+```
+
+* Prepare the host reference genome STAR index:
+```
+wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
+gzip -d Homo_sapiens.GRCh38.dna.toplevel.fa.gz
+wget ftp://ftp.ensembl.org/pub/release-101/gtf/homo_sapiens/Homo_sapiens.GRCh38.101.gtf.gz
+gzip -d Homo_sapiens.GRCh38.101.gtf.gz
+STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691637 --genomeDir ./ \
+     --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.gtf \
+     --sjdbOverhang 100
+```
+
+* Prepare kraken2 database
+```
+wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
+tar zxf minikraken_8GB_202003.tgz
+```
+
+Step 2: Download the test dataset
+--------------------------------------
+
+The test data comes from a gastric patient sequenced by 10X Genomics technology. It was pre-processed to
+a reduced size, and you can download the test data:
+```
+wget https://github.com/rstatistics/PathogenTrack/data/testdata.tgz
+wget https://github.com/rstatistics/PathogenTrack/data/cellranger_out.tgz
+wget https://github.com/rstatistics/PathogenTrack/data/pathogentrack_out.tgz
+```
+
+Decompress these files, and decompress the barcodes.tsv.gz file.
+```
+tar zxvf testdata.tgz
+tar zxvf cellranger_out.tgz
+tar zxvf cellranger_out/barcodes.tsv.gz
+```
+
+Step 3: Excute `cellranger` to get scRNA count matrix
+-----------------------------------------------------------
+
+```
+cellranger count --id=test_cellranger_out \
+                 --fastqs=/path/to/testdata/ \
+                 --sample=test \
+                 --transcriptome=/path/to/cellranger/refdata-cellranger-GRCh38-A
+```
+
+Then copy the barcodes.tsv.gz file and decompress it:
+```
+cp test_cellranger_out/outs/filtered_feature_bc_matrix/barcodes.tsv.gz .
+gzip -d barcodes.tsv.gz
+```
+
+Step 4: Run `PathogenTrack` to get the pathogens at the single-cell level
+----------------------------------------------------------------------------
+
+```
+python PathogenTrack.py count --project_id test_pathogentrack_out \
+                              --star_index /path/to/STAR/index/ \
+                              --kraken_db /path/to/minikraken_8GB_20200312/ \
+                              --barcode barcodes.tsv \
+                              --read1 test_S1_L001_R1_001.fastq.gz \
+                              --read2 test_S1_L001_R2_001.fastq.gz 
+```
+ * Users can run step by step:
+ ** a. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
