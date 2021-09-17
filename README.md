@@ -66,10 +66,12 @@ python PathogenTrack.py count --project_id PathogenTrack_out --pattern CCCCCCCCC
                               --read1 simulation_S1_L001_R1_001.fastq.gz \
                               --read2 simulation_S1_L001_R2_001.fastq.gz 
 ```
-**IMPORTANT**: The Read 1 in the example is made up of 16 bp CB and 12 bp UMI, so the --pattern is CCCCCCCCCCCCCCCCNNNNNNNNNN (16C and 10N). Users must adjust the pattern with their own Read 1 accordingly.
+**IMPORTANT**: The Read 1 in the example is made up of 16 bp CB and 10 bp UMI, so the --pattern is CCCCCCCCCCCCCCCCNNNNNNNNNN (16C and 10N). Users must adjust the pattern with their own Read 1 accordingly.
 
 *Note:* It may take 4-6 hours to complete one sample, and it depends on the performance of computational resources and the size of the raw single-cell data.
 
+### Please see [QUICK_START.md](https://github.com/rstatistics/PathogenTrack/blob/master/doc/QUICK_START.md) for a complete tutorial.
+
 ## Questions
 
-For questions and suggestions about the pipeline or the code, please contact [rstatistics@sjtu.edu.cn](mailto:rstatistics@sjtu.edu.cn) and [ty12260@rjh.com.cn](mailto:ty12260@rjh.com.cn). We will try our best to provide support, address new issues, and keep improving this software.
+For questions and suggestions about the pipeline or the code, please contact [admin@ncrna.net](mailto:admin@ncrna.net) and [ty12260@rjh.com.cn](mailto:ty12260@rjh.com.cn). We will try our best to provide support, address new issues, and keep improving this software.
