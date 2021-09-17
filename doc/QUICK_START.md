@@ -54,24 +54,18 @@ wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 tar zxf minikraken_8GB_202003.tgz
 ```
 
-Step 2: Download the test dataset
+Step 2: Prepare the test dataset
 --------------------------------------
 
-**(1)** The test data comes from a gastric patient sequenced by 10X Genomics technology. It was pre-processed to
-a reduced size, and you can download the test data:
+The test data comes from a gastric patient sequenced by 10X Genomics technology. It was pre-processed to
+a reduced size, and you can find the test data from PathogenTrack/data directory. Then decompress these files, 
+and decompress the barcodes.tsv.gz file.
 ```
-wget [https://github.com/rstatistics/PathogenTrack/blob/master/data/testdata.tgz](https://raw.githubusercontent.com/rstatistics/PathogenTrack/master/data/testdata.tgz)
+tar zxvf PathogenTrack/data/testdata.tgz
 
-wget [https://github.com/rstatistics/PathogenTrack/blob/master/data/cellranger_out.tgz](https://raw.githubusercontent.com/rstatistics/PathogenTrack/master/data/cellranger_out.tgz)
-```
+tar zxvf PathogenTrack/data/cellranger_out.tgz
 
-**(2)** Decompress these files, and decompress the barcodes.tsv.gz file.
-```
-tar zxvf testdata.tgz
-
-tar zxvf cellranger_out.tgz
-
-tar zxvf cellranger_out/barcodes.tsv.gz
+tar zxvf PathogenTrack/data/cellranger_out/barcodes.tsv.gz
 ```
 
 Step 3: Excute `cellranger` to get scRNA count matrix
@@ -79,6 +73,8 @@ Step 3: Excute `cellranger` to get scRNA count matrix
 
 **(1)** Single-cell RNA sequencing reads are first preprocessed with single-cell quantification software (such as `cellranger` or `alevin`) to obtain the gene quantification matrix and cell barcode file. Here, we use `cellranger` as an example.
 ```
+cd PathogenTrack/data/
+
 cellranger count --id=test_cellranger_out \
                  --fastqs=/path/to/testdata/ \
                  --sample=test \
@@ -94,11 +90,7 @@ gzip -d barcodes.tsv.gz
 
 *Note*: Users can skip this step (step 3) by downloading the cellranger output as follows:
 ```
-wget https://github.com/rstatistics/PathogenTrack/data/cellranger_out.tgz
-
-tar zxvf cellranger_out.tgz
-
-cp cellranger_out/outs/filtered_feature_bc_matrix/barcodes.tsv.gz .
+cp PathogenTrack/data/cellranger_out/outs/filtered_feature_bc_matrix/barcodes.tsv.gz .
 
 gzip -d barcodes.tsv.gz
 ```
