@@ -17,7 +17,7 @@ data to reduce its size.
 Step 1: Install `PathogenTrack`
 -----------------------------------
 
-* Before installing `PathogenTrack`, dependencies must be installed previously, users are suggested to
+**i)** Before installing `PathogenTrack`, dependencies must be installed previously, users are suggested to
 use `conda` with the following command:
 
 ```
@@ -25,12 +25,12 @@ conda env create -f environment.yml
 ```
 An environment named `PathogenTrack` will be created, and the dependencies will be installed too.
 
-* Get `PathogenTrack`.
+**ii)** Get `PathogenTrack`.
 ```
 git clone git@github.com:rstatistics/PathogenTrack.git
 ```
 
-* Prepare the host reference genome STAR index:
+**iii)** Prepare the host reference genome STAR index:
 ```
 wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
 
@@ -45,7 +45,7 @@ STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691
      --sjdbOverhang 100
 ```
 
-* Prepare kraken2 database
+**iv)** Prepare kraken2 database
 ```
 wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 
@@ -55,7 +55,7 @@ tar zxf minikraken_8GB_202003.tgz
 Step 2: Download the test dataset
 --------------------------------------
 
-The test data comes from a gastric patient sequenced by 10X Genomics technology. It was pre-processed to
+**i)** The test data comes from a gastric patient sequenced by 10X Genomics technology. It was pre-processed to
 a reduced size, and you can download the test data:
 ```
 wget https://github.com/rstatistics/PathogenTrack/data/testdata.tgz
@@ -65,7 +65,7 @@ wget https://github.com/rstatistics/PathogenTrack/data/cellranger_out.tgz
 wget https://github.com/rstatistics/PathogenTrack/data/pathogentrack_out.tgz
 ```
 
-Decompress these files, and decompress the barcodes.tsv.gz file.
+**ii)** Decompress these files, and decompress the barcodes.tsv.gz file.
 ```
 tar zxvf testdata.tgz
 
@@ -77,6 +77,7 @@ tar zxvf cellranger_out/barcodes.tsv.gz
 Step 3: Excute `cellranger` to get scRNA count matrix
 -----------------------------------------------------------
 
+**i)** Single-cell RNA sequencing reads are first preprocessed with single-cell quantification software (such as `cellranger` or `alevin`) to obtain the gene quantification matrix and cell barcode file. Here, we use `cellranger` as an example.
 ```
 cellranger count --id=test_cellranger_out \
                  --fastqs=/path/to/testdata/ \
@@ -84,7 +85,7 @@ cellranger count --id=test_cellranger_out \
                  --transcriptome=/path/to/cellranger/refdata-cellranger-GRCh38-A
 ```
 
-Then copy the barcodes.tsv.gz file and decompress it:
+**ii)** Then copy the barcodes.tsv.gz file and decompress it:
 ```
 cp test_cellranger_out/outs/filtered_feature_bc_matrix/barcodes.tsv.gz .
 
@@ -94,6 +95,8 @@ gzip -d barcodes.tsv.gz
 Step 4: Run `PathogenTrack` to get the pathogens at the single-cell level
 ----------------------------------------------------------------------------
 
+`PathogenTrack` takes raw single-cell RNAseq fastq file and the barcodes.tsv file as input. 
+Users can obtain pathogen quantification matrix by running this command:
 ```
 python PathogenTrack.py count --project_id test_pathogentrack_out \
                               --star_index /path/to/STAR/index/ \
@@ -103,6 +106,8 @@ python PathogenTrack.py count --project_id test_pathogentrack_out \
                               --read2 test_S1_L001_R2_001.fastq.gz 
 ```
 
+The full usage on how to use PathogenTrack is as follows:
+```
 usage: PathogenTrack.py [-h] [-v]
                         {count,trim,extract,filter,align,classify,quant} ...
 
@@ -120,8 +125,12 @@ positional arguments:
 optional arguments:
   -h, --help            show this help message and exit
   -v, --version         show program's version number and exit
+```
 
- * Users can run step by step:
+`PathogenTrack` contains seven functions, and users can complete the whole pathogen 
+quantification process with `count` function. Otherwise, the following **six** steps can 
+also complete the whole process and obtain the pathogen quantification matrix:
+`trim` -> `extract` -> `filter` -> `align` -> `classify` -> `quant`
 
 i) Remove the trailing "-1" in the cell barcodes
 ```
