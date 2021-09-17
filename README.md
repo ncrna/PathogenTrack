@@ -37,8 +37,9 @@ gzip -d Homo_sapiens.GRCh38.101.gtf.gz
 
 Build STAR Index with the following command:
 ```sh
-STAR --runThreadN 16 --runMode genomeGenerate --limitGenomeGenerateRAM 168632691637 --genomeDir ./ \
-     --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa --sjdbGTFfile ./Homo_sapiens.GRCh38.101.gtf \
+STAR --runThreadN 16 --runMode genomeGenerate --genomeDir ./ \
+     --genomeFastaFiles ./Homo_sapiens.GRCh38.dna.toplevel.fa \
+     --sjdbGTFfile ./Homo_sapiens.GRCh38.101.gtf \
      --sjdbOverhang 100
 ```
 
