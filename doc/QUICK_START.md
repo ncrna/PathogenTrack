@@ -102,13 +102,56 @@ python PathogenTrack.py count --project_id test_pathogentrack_out \
                               --read1 test_S1_L001_R1_001.fastq.gz \
                               --read2 test_S1_L001_R2_001.fastq.gz 
 ```
+
+usage: PathogenTrack.py [-h] [-v]
+                        {count,trim,extract,filter,align,classify,quant} ...
+
+positional arguments:
+  {count,trim,extract,filter,align,classify,quant}
+    count               one command to count microbes at single-cell levels
+    trim                trim -1 at the end of barcode
+    extract             extract and append barcode and UMI to the read2 name
+    filter              filter out low quality / complexity reads
+    align               align clean reads to the reference genome
+    classify            classify unmapped reads to taxons
+    quant               deduplication and quantification of microbes at
+                        single-cell levels
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -v, --version         show program's version number and exit
+
  * Users can run step by step:
 
+i) Remove the trailing "-1" in the cell barcodes
+```
+python PathogenTrack.py trim --project_id test --barcode barcodes.tsv
+```
 
+ii) Filter and attach cell barcodes to the header of read2
+```
+python PathogenTrack.py extract --project_id test --read1 Hpylori_P5_S1_L000_R1_001.fastq.gz --read2 Hpylori_P5_S1_L000_R2_001.fastq.gz
+```
 
+iii) Filter out low-quality or low-complexity reads
+```
+python PathogenTrack.py filter --project_id test
+```
 
+iv) Align reads to the host reference genome and preserve the unmapped reads
+```
+python PathogenTrack.py align --project_id test/ --star_index /pata/to/STAR/index
+```
 
+v) Classify the unmapped reads by kraken2
+```
+python PathogenTrack.py classify --project_id test/ --kraken_db /path/to/minikraken_8GB_20200312/
+```
 
+vi) Correct, deduplicate, and quantify species at the single-cell level
+```
+python PathogenTrack.py quant --project_id test
+```
 
 
 
