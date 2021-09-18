@@ -28,7 +28,7 @@ An environment named `PathogenTrack` will be created, and the dependencies will 
 
 2 . Get `PathogenTrack`.
 ```
-git clone git@github.com:rstatistics/PathogenTrack.git
+git clone git@github.com:ncrna/PathogenTrack.git
 ```
 
 3 . Prepare the host reference genome STAR index:
