@@ -21,7 +21,7 @@ install:
   - conda env create -f environment.yml
 
 script:
-  - git clone git@github.com:rstatistics/PathogenTrack.git
+  - python rstatistics/PathogenTrack.py -h
 
 branches:
   only:
