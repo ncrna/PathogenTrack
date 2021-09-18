@@ -2,7 +2,6 @@ language: python
 
 os:
   - linux
-  - osx
 
 matrix:
   include:
@@ -21,9 +20,7 @@ install:
   - conda env create -f environment.yml
 
 script:
-  - pwd
-  - ls
-  - ls -l 
+  - python PathogenTrack.py count -h
 
 branches:
   only:
