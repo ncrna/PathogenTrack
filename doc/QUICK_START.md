@@ -18,7 +18,7 @@ data to reduce the file size.
 Step 1: Install `PathogenTrack`
 -----------------------------------
 
-**(1)** Before installing `PathogenTrack`, dependencies must be installed previously, users are suggested to
+1 . Before installing `PathogenTrack`, dependencies must be installed previously, users are suggested to
 use `conda` with the following command:
 
 ```
@@ -26,12 +26,12 @@ conda env create -f environment.yml
 ```
 An environment named `PathogenTrack` will be created, and the dependencies will be installed too.
 
-**(2)** Get `PathogenTrack`.
+2 . Get `PathogenTrack`.
 ```
 git clone git@github.com:rstatistics/PathogenTrack.git
 ```
 
-**(3)** Prepare the host reference genome STAR index:
+3 . Prepare the host reference genome STAR index:
 ```
 wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
 
@@ -47,7 +47,7 @@ STAR --runThreadN 16 --runMode genomeGenerate --genomeDir ./ \
      --sjdbOverhang 100
 ```
 
-**(4)** Prepare kraken2 database
+4 . Prepare kraken2 database
 ```
 wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 
