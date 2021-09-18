@@ -9,10 +9,6 @@ os:
 python:
   - "3.6.10"
 
-before_install:
-  - chmod +x travis_setup.sh
-  - ./travis_setup.sh
-
 install:
   - conda install -e environment.yml
 
