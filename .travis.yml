@@ -9,9 +9,6 @@ os:
 python:
   - "3.6.10"
 
-before_install:
-  - chmod u+x deploy.sh
-
 install:
   - conda install -e environment.yml
 
