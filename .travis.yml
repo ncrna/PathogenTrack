@@ -21,7 +21,9 @@ install:
   - conda env create -f environment.yml
 
 script:
-  - python rstatistics/PathogenTrack.py -h
+  - pwd
+  - ls
+  - ls -l 
 
 branches:
   only:
