@@ -34,7 +34,7 @@ kraken2|2.1.1
 
 3 . Get PathogenTrack
 ```sh
-git clone git@github.com:rstatistics/PathogenTrack.git
+git clone git@github.com:ncrna/PathogenTrack.git
 ```
 ## Databases Preparation
 
