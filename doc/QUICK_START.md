@@ -71,7 +71,7 @@ tar zxvf PathogenTrack/data/cellranger_out/barcodes.tsv.gz
 Step 3: Excute `cellranger` to get scRNA count matrix
 -----------------------------------------------------------
 
-**(1)** Single-cell RNA sequencing reads are first preprocessed with single-cell quantification software (such as `cellranger` or `alevin`) to obtain the gene quantification matrix and cell barcode file. Here, we use `cellranger` as an example.
+1 . Single-cell RNA sequencing reads are first preprocessed with single-cell quantification software (such as `cellranger` or `alevin`) to obtain the gene quantification matrix and cell barcode file. Here, we use `cellranger` as an example.
 ```
 cd PathogenTrack/data/
 
@@ -81,7 +81,7 @@ cellranger count --id=test_cellranger_out \
                  --transcriptome=/path/to/cellranger/refdata-cellranger-GRCh38-A
 ```
 
-**(2)** Then copy the barcodes.tsv.gz file and decompress it:
+2 . Then copy the barcodes.tsv.gz file and decompress it:
 ```
 cp test_cellranger_out/outs/filtered_feature_bc_matrix/barcodes.tsv.gz .
 
@@ -94,7 +94,6 @@ cp PathogenTrack/data/cellranger_out/outs/filtered_feature_bc_matrix/barcodes.ts
 
 gzip -d barcodes.tsv.gz
 ```
-
 
 Step 4: Run `PathogenTrack` to get the pathogens at the single-cell level
 ----------------------------------------------------------------------------
@@ -137,34 +136,34 @@ also complete the whole process and obtain the pathogen quantification matrix:
 
 `trim` -> `extract` -> `filter` -> `align` -> `classify` -> `quant`
 
-**(1)** Remove the trailing "-1" in the cell barcodes
+1 . Remove the trailing "-1" in the cell barcodes
 ```
 python PathogenTrack.py trim --project_id test --barcode barcodes.tsv
 ```
 
-**(2)** Filter and attach cell barcodes to the header of read2
+2 . Filter and attach cell barcodes to the header of read2
 ```
 python PathogenTrack.py extract --project_id test \
                                 --read1 test_S1_L000_R1_001.fastq.gz \
                                 --read2 test_S1_L000_R2_001.fastq.gz
 ```
 
-**(3)** Filter out low-quality or low-complexity reads
+3 . Filter out low-quality or low-complexity reads
 ```
 python PathogenTrack.py filter --project_id test
 ```
 
-**(4)** Align reads to the host reference genome and preserve the unmapped reads
+4 . Align reads to the host reference genome and preserve the unmapped reads
 ```
 python PathogenTrack.py align --project_id test/ --star_index /pata/to/STAR/index
 ```
 
-**(5)** Classify the unmapped reads by kraken2
+5 . Classify the unmapped reads by kraken2
 ```
 python PathogenTrack.py classify --project_id test/ --kraken_db /path/to/minikraken_8GB_20200312/
 ```
 
-**(6)** Correct, deduplicate, and quantify species at the single-cell level
+6 . Correct, deduplicate, and quantify species at the single-cell level
 ```
 python PathogenTrack.py quant --project_id test
 ```
