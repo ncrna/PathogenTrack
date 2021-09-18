@@ -18,7 +18,7 @@ before_install:
   - conda update -q conda
 
 install:
-  - conda install -e environment.yml
+  - conda env create -f environment.yml
 
 script:
   - git clone git@github.com:rstatistics/PathogenTrack.git
