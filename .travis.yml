@@ -1,0 +1,26 @@
+language: python
+sudo: false
+cache: conda
+
+os:
+  - linux
+  - osx
+
+python:
+  - "3.6.10"
+
+before_install:
+  - chmod u+x deploy.sh
+
+install:
+  - conda install -e environment.yml
+
+script:
+  - git clone git@github.com:rstatistics/PathogenTrack.git
+
+branches:
+  only:
+    - master
+
+notifications:
+  email: false
