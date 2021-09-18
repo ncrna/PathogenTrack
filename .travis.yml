@@ -20,6 +20,7 @@ install:
   - conda env create -f environment.yml
 
 script:
+  - conda activate PathogenTrack
   - python PathogenTrack.py count -h
 
 branches:
