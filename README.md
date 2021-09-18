@@ -20,7 +20,18 @@ bash Miniconda3-latest-Linux-x86_64.sh
 ```sh
 conda env create -f environment.yml
 ```
-3. Get PathogenTrack
+Users can install the dependencies manually. The dependencies and test versions are listed below.
+
+Package|Version
+--|:--:
+python|3.6.10
+biopython|1.78
+star|2.7.5a
+samtools|1.9
+umi_tools|1.1.1
+kraken2|2.1.1
+
+3 . Get PathogenTrack
 ```sh
 git clone git@github.com:rstatistics/PathogenTrack.git
 ```
