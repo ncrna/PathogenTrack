@@ -1,4 +1,4 @@
-[![Build Status](https://app.travis-ci.com/rstatistics/PathogenTrack.svg?branch=master)](https://app.travis-ci.com/rstatistics/PathogenTrack)
+[![Build Status](https://app.travis-ci.com/ncrna/PathogenTrack.svg?branch=master)](https://app.travis-ci.com/ncrna/PathogenTrack)
 # PathogenTrack
 PathogenTrack is an unsupervised computational software that uses `unmapped single-cell RNAseq reads` to characterize `intracellular pathogens` at the single-cell level. It is a python-based script that can be used to identify and quantify intracellular pathogenic `viruses` and `bacteria` reads at the single-cell level.
 PathogenTrack has been tested on various scRNA-seq datasets derived from simulated and real datasets and performed robustly. The detailes are described in our paper *`Decoding Intracellular Pathogens of scRNA-seq experiments with PathogenTrack and SCKIT`*.
@@ -83,7 +83,7 @@ python PathogenTrack.py count --project_id PathogenTrack_out --pattern CCCCCCCCC
 
 *Note:* It may take 4-6 hours to complete one sample, and it depends on the performance of computational resources and the size of the raw single-cell data.
 
-### Please see [QUICK_START.md](https://github.com/rstatistics/PathogenTrack/blob/master/doc/QUICK_START.md) for a complete tutorial.
+### Please see [QUICK_START.md](https://github.com/ncrna/PathogenTrack/blob/master/doc/QUICK_START.md) for a complete tutorial.
 
 ## Questions
 
