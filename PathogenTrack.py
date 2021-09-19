@@ -12,7 +12,7 @@ from Bio.Seq import Seq
 import argparse
 import subprocess
 
-VERSION = '0.2.0'
+VERSION = '0.2.2'
 USAGE = '''%(prog)s [options]'''
 
 def check_status(cmd):
@@ -34,19 +34,25 @@ def check_dir(path):
     return(0)
 
 def check_deps():
+    status, _ = check_status('fastp -h')
+    if (status != 0):
+        sys.stderr.write('fastp is required for PathogenTrack!\n')
+
     status, _ = check_status('STAR -h')
     if (status != 0):
-        sys.exit('STAR is required for PathogenTrack!')
+        sys.stderr.write('STAR is required for PathogenTrack!\n')
 
     status, _ = check_status('umi_tools -h')
     if (status != 0):
-        sys.exit('umi_tools (version=1.1.1) is required for PathogenTrack!')
+        sys.stderr.write('umi_tools is required for PathogenTrack!\n')
 
     status, _ = check_status('kraken2 -h')
     if (status != 0):
-        sys.exit('kraken2 (version=2.1.1) is required for PathogenTrack!')
+        sys.stderr.write('kraken2 is required for PathogenTrack!\n')
+    sys.exit(0)
 
 def trim(project_id, barcode, output): ## trim -1 at the end of barcode
+    check_deps()
     check_dir(project_id)
     output = project_id + '/' + output
     fout = open(output, "w")
@@ -58,6 +64,7 @@ def trim(project_id, barcode, output): ## trim -1 at the end of barcode
     fout.close()
 
 def extract(project_id, read1, read2, pattern, barcode, output, ignore_suffix): ## add cell barcode
+    check_deps()
     check_dir(project_id)
     pattern = str(pattern)
     barcode = project_id + '/' + barcode
@@ -72,6 +79,7 @@ def extract(project_id, read1, read2, pattern, barcode, output, ignore_suffix): 
     return(0)
 
 def filter(project_id, input_reads, thread, output, trim_poly_x, filter_low_complexity, complexity_threshold): ## filter low quality / complexity reads
+    check_deps()
     check_dir(project_id)
     input_reads = project_id + '/' + input_reads
     output = project_id + '/' + output
@@ -88,6 +96,7 @@ def filter(project_id, input_reads, thread, output, trim_poly_x, filter_low_comp
     return(0)
 
 def align(project_id, star_index, input_reads, thread, output): ## do star alignment
+    check_deps()
     check_dir(project_id)
     input_reads = project_id + '/' + input_reads
     output = project_id + '/' + output
@@ -101,6 +110,7 @@ def align(project_id, star_index, input_reads, thread, output): ## do star align
     return(0)
 
 def classify(project_id, kraken_db, input_reads, thread, confidence, out_reads, out_table, out_report): ## run kraken2
+    check_deps()
     check_dir(project_id)
     input_reads = project_id + '/' + input_reads
     out_reads = project_id + '/' + out_reads
@@ -124,6 +134,7 @@ def check_rank(rank):
     return(level)
 
 def quant(project_id, barcode, input_reads, input_table, input_report, min_reads, output_reads, output_matrix): ## deduplication and quantification microbes at single-cell levels
+    check_deps()
     check_dir(project_id)
     min_reads = int(min_reads)
     barcode = project_id + '/' + barcode
@@ -285,6 +296,7 @@ def quant(project_id, barcode, input_reads, input_table, input_report, min_reads
     return
 
 def count(project_id, star_index, kraken_db, barcode, read1, read2, pattern, thread, confidence, min_reads, ignore_suffix, trim_poly_x, filter_low_complexity, complexity_threshold):
+    check_deps()
     check_dir(project_id)
     trim(project_id, barcode, output='barcodes.tsv')
     extract(project_id, read1, read2, pattern, barcode='barcodes.tsv', output='reads_barcoded.fq.gz', ignore_suffix=ignore_suffix)
@@ -444,7 +456,6 @@ def get_args():
 def main():
     parser = get_args()
     args = parser.parse_args()
-    check_deps()
     if not args.command:
         parser.parse_args(["--help"])
         sys.exit(0)
