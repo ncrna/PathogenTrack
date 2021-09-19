@@ -12,10 +12,10 @@ from Bio.Seq import Seq
 import argparse
 import subprocess
 
-VERSION = 'v0.6_20210620'
+VERSION = '0.1.9'
 USAGE = '''%(prog)s [options]'''
 
-def checkstatus(cmd):
+def check_status(cmd):
     ''' get command status '''
     status = 0
     try:
@@ -32,6 +32,19 @@ def check_dir(path):
     if not os.path.exists(path):
         os.makedirs(path)
     return(0)
+
+def check_deps():
+    status, _ = check_status('STAR -h')
+    if (status != 0):
+        sys.exit('STAR is required for PathogenTrack!')
+
+    status, _ = check_status('umi_tools -h')
+    if (status != 0):
+        sys.exit('umi_tools (version=1.1.1) is required for PathogenTrack!')
+
+    status, _ = check_status('kraken2 -h')
+    if (status != 0):
+        sys.exit('kraken2 (version=2.1.1) is required for PathogenTrack!')
 
 def trim(project_id, barcode, output): ## trim -1 at the end of barcode
     check_dir(project_id)
@@ -54,7 +67,7 @@ def extract(project_id, read1, read2, pattern, barcode, output, ignore_suffix): 
     cmd += ' --read2-out ' + output + ' --filter-cell-barcode' + ' --whitelist ' + barcode
     if (ignore_suffix):
         cmd += ' --ignore-read-pair-suffixes'
-    status, stdout = checkstatus(cmd)
+    status, stdout = check_status(cmd)
     print("status is %s and output is %s" % (status, stdout))
     return(0)
 
@@ -70,7 +83,7 @@ def filter(project_id, input_reads, thread, output, trim_poly_x, filter_low_comp
         if (complexity_threshold):
             cmd += ' --complexity_threshold ' + str(complexity_threshold)
     cmd += ' && rm fastp.json && rm fastp.html'
-    status, stdout = checkstatus(cmd)
+    status, stdout = check_status(cmd)
     print("status is %s and output is %s" % (status, stdout))
     return(0)
 
@@ -83,7 +96,7 @@ def align(project_id, star_index, input_reads, thread, output): ## do star align
     cmd += '--outFilterIntronMotifs RemoveNoncanonical ' + ' --quantMode - ' + ' --outFileNamePrefix ' + project_id + '/ --outReadsUnmapped Fastx'
     cmd += ' && mv ' + project_id + '/Unmapped.out.mate1 ' + output + ' && rm ' + project_id + '/Log.final.out && rm ' + project_id + '/Log.out && rm ' + project_id + '/Log.progress.out && rm ' + project_id + '/SJ.out.tab'
     print(cmd)
-    status, stdout = checkstatus(cmd)
+    status, stdout = check_status(cmd)
     print("status is %s and output is %s" % (status, stdout))
     return(0)
 
@@ -97,7 +110,7 @@ def classify(project_id, kraken_db, input_reads, thread, confidence, out_reads, 
     cmd = 'kraken2 --db ' + kraken_db + ' --confidence ' + str(confidence) + ' --threads ' + str(thread) + ' --use-names --classified-out ' + out_reads + ' --report ' + out_report + ' '
     cmd += input_reads + ' | grep -w ^C > ' + out_table
     print(cmd)
-    status, stdout = checkstatus(cmd)
+    status, stdout = check_status(cmd)
     print("status is %s and output is %s" % (status, stdout))
     return(0)
 
@@ -431,6 +444,7 @@ def get_args():
 def main():
     parser = get_args()
     args = parser.parse_args()
+    check_deps()
     if not args.command:
         parser.parse_args(["--help"])
         sys.exit(0)
