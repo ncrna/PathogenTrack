@@ -12,7 +12,7 @@ from Bio.Seq import Seq
 import argparse
 import subprocess
 
-VERSION = '0.1.9'
+VERSION = '0.2.0'
 USAGE = '''%(prog)s [options]'''
 
 def check_status(cmd):
