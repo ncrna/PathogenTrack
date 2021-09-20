@@ -11,4 +11,6 @@ dependencies:
   - biopython=1.78
   - umi_tools=1.1.1
   - kraken2=2.1.1
+  - pip:
+    - pathogentrack
 
