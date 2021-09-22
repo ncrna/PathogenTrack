@@ -12,7 +12,7 @@ from Bio.Seq import Seq
 import argparse
 import subprocess
 
-VERSION = '0.2.2'
+VERSION = '0.2.3'
 USAGE = '''%(prog)s [options]'''
 
 def check_status(cmd):
@@ -34,22 +34,21 @@ def check_dir(path):
     return(0)
 
 def check_deps():
-    status, _ = check_status('fastp -h')
+    status, _ = check_status('fastp --help')
     if (status != 0):
         sys.stderr.write('fastp is required for PathogenTrack!\n')
 
-    status, _ = check_status('STAR -h')
+    status, _ = check_status('STAR --help')
     if (status != 0):
         sys.stderr.write('STAR is required for PathogenTrack!\n')
 
-    status, _ = check_status('umi_tools -h')
+    status, _ = check_status('umi_tools --help')
     if (status != 0):
         sys.stderr.write('umi_tools is required for PathogenTrack!\n')
 
-    status, _ = check_status('kraken2 -h')
+    status, _ = check_status('kraken2 --help')
     if (status != 0):
         sys.stderr.write('kraken2 is required for PathogenTrack!\n')
-    sys.exit(0)
 
 def trim(project_id, barcode, output): ## trim -1 at the end of barcode
     check_deps()
@@ -100,11 +99,10 @@ def align(project_id, star_index, input_reads, thread, output): ## do star align
     check_dir(project_id)
     input_reads = project_id + '/' + input_reads
     output = project_id + '/' + output
-    cmd = 'STAR --genomeDir ' + star_index + ' --readFilesIn ' + input_reads + ' --readFilesCommand zcat '
+    cmd = 'STAR --genomeDir ' + star_index + ' --readFilesIn ' + input_reads + ' --readFilesCommand gunzip -c '
     cmd += '--runThreadN ' + str(thread) + ' --outFilterMismatchNmax 6 ' + ' --outSAMtype None ' + ' --outFilterMultimapNmax 20 '
     cmd += '--outFilterIntronMotifs RemoveNoncanonical ' + ' --quantMode - ' + ' --outFileNamePrefix ' + project_id + '/ --outReadsUnmapped Fastx'
     cmd += ' && mv ' + project_id + '/Unmapped.out.mate1 ' + output + ' && rm ' + project_id + '/Log.final.out && rm ' + project_id + '/Log.out && rm ' + project_id + '/Log.progress.out && rm ' + project_id + '/SJ.out.tab'
-    print(cmd)
     status, stdout = check_status(cmd)
     print("status is %s and output is %s" % (status, stdout))
     return(0)
@@ -119,7 +117,6 @@ def classify(project_id, kraken_db, input_reads, thread, confidence, out_reads, 
     
     cmd = 'kraken2 --db ' + kraken_db + ' --confidence ' + str(confidence) + ' --threads ' + str(thread) + ' --use-names --classified-out ' + out_reads + ' --report ' + out_report + ' '
     cmd += input_reads + ' | grep -w ^C > ' + out_table
-    print(cmd)
     status, stdout = check_status(cmd)
     print("status is %s and output is %s" % (status, stdout))
     return(0)
@@ -182,11 +179,6 @@ def quant(project_id, barcode, input_reads, input_table, input_report, min_reads
                         tmp_taxname = row.strip().split("\t")[5].strip()
                         if selected_reads >= min_reads:
                             Taxons[tmp_taxid] = selected_taxid + '|' + selected_taxname
-                            #print(tmp_taxname + ' -> ' + selected_taxname)
-                    #print("<-------------------------------------------------------------------------------------")
-                    #for x in dict(sorted(tmp_dict.items(), key=lambda item: item[1], reverse=True)).keys():
-                    #    print(x)
-                    #print("------------------------------------------------------------------------------------->\n\n\n")
                     selected = False
                     selected_taxid = ''
                     selected_taxname = ''
@@ -206,17 +198,12 @@ def quant(project_id, barcode, input_reads, input_table, input_report, min_reads
                 if not (selected_taxid and selected_taxname):
                     selected_taxid = row.strip().split("\t")[4]
                     selected_taxname = row.strip().split("\t")[5].strip()
+                    selected_reads = int(row.strip().split("\t")[2])
                 tmp_taxid = row.strip().split("\t")[4]
                 tmp_taxname = row.strip().split("\t")[5].strip()
 
                 if selected_reads >= min_reads:
                     Taxons[tmp_taxid] = selected_taxid + '|' + selected_taxname
-                #    print(tmp_taxname + ' -> ' + selected_taxname)
-                #print("<-------------------------------------------------------------------------------------")
-
-                #for x in dict(sorted(tmp_dict.items(), key=lambda item: item[1], reverse=True)).keys():
-                #    print(x)
-                #print("------------------------------------------------------------------------------------->\n\n\n")
     freport.close()
 
     Dict = {}
@@ -228,7 +215,6 @@ def quant(project_id, barcode, input_reads, input_table, input_report, min_reads
             if cb not in cells:
                 print("CB is: " + cb + " and UMI is: " + umi)
                 continue
-            #taxid = row.split("\t")[2]
             taxonomy = row.split("\t")[2]
             taxname, taxid = taxonomy.split(" (taxid ")
             taxid = taxid.split(")")[0]
@@ -259,8 +245,6 @@ def quant(project_id, barcode, input_reads, input_table, input_report, min_reads
 
     # store organisms in set
     organisms_set = {organisms[k] for k in organisms}
-    #for k in organisms:
-    #    print(k + ' : ' + organisms[k])
 
     genes = set()
     gene_counts = {}
