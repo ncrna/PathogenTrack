@@ -1,4 +1,5 @@
 [![Build Status](https://app.travis-ci.com/ncrna/PathogenTrack.svg?branch=master)](https://app.travis-ci.com/ncrna/PathogenTrack)
+[![Platform](https://img.shields.io/badge/platform-any-ec2eb4.svg)](https://github.com/ncrna/PathogenTrack)
 [![PYPI](https://img.shields.io/pypi/v/pathogentrack.svg)](https://pypi.org/project/pathogentrack/)
 [![Conda](https://anaconda.org/bioconda/pathogentrack/badges/installer/conda.svg)](https://anaconda.org/bioconda/pathogentrack)
 [![Conda Downloads](https://anaconda.org/bioconda/pathogentrack/badges/downloads.svg)](https://anaconda.org/bioconda/pathogentrack)
