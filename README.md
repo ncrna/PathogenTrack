@@ -1,9 +1,9 @@
 [![Build Status](https://app.travis-ci.com/ncrna/PathogenTrack.svg?branch=master)](https://app.travis-ci.com/ncrna/PathogenTrack)
-[![Platform](https://img.shields.io/badge/platform-any-ec2eb4.svg)](https://github.com/ncrna/PathogenTrack)
+[![The MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ncrna/PathogenTrack/blob/master/LICENSE)
 [![PYPI](https://img.shields.io/pypi/v/pathogentrack.svg)](https://pypi.org/project/pathogentrack/)
 [![Conda](https://anaconda.org/bioconda/pathogentrack/badges/installer/conda.svg)](https://anaconda.org/bioconda/pathogentrack)
 [![Conda Downloads](https://anaconda.org/bioconda/pathogentrack/badges/downloads.svg)](https://anaconda.org/bioconda/pathogentrack)
-[![The MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ncrna/PathogenTrack/blob/master/LICENSE)
+[![Platform](https://img.shields.io/badge/platform-any-ec2eb4.svg)](https://github.com/ncrna/PathogenTrack)
 # PathogenTrack
 PathogenTrack is an unsupervised computational software that uses `unmapped single-cell RNAseq reads` to characterize `intracellular pathogens` at the single-cell level. It is a python-based script that can be used to identify and quantify intracellular pathogenic `viruses` and `bacteria` reads at the single-cell level.
 PathogenTrack has been tested on various scRNA-seq datasets derived from simulated and real datasets and performed robustly. The detailes are described in our paper *`Decoding Intracellular Pathogens of scRNA-seq experiments with PathogenTrack and SCKIT`*.
