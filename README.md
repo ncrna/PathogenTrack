@@ -88,3 +88,6 @@ python PathogenTrack.py count --project_id PathogenTrack_out --pattern CCCCCCCCC
 
 ## Questions
 If you have any questions/problems with PathogenTrack, feel free to leave an issue! We will try our best to provide support, address new issues, and keep improving this software.
+
+## Citation
+`PathogenTrack` and `Yeskit`: tools for identifying intracellular pathogens from single-cell RNA-sequencing datasets as illustrated by application to COVID-19
