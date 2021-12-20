@@ -87,5 +87,4 @@ python PathogenTrack.py count --project_id PathogenTrack_out --pattern CCCCCCCCC
 ### Please see [QUICK_START.md](https://github.com/ncrna/PathogenTrack/blob/master/doc/QUICK_START.md) for a complete tutorial.
 
 ## Questions
-
-For questions and suggestions about the pipeline or the code, please contact [admin@ncrna.net](mailto:admin@ncrna.net) and [ty12260@rjh.com.cn](mailto:ty12260@rjh.com.cn). We will try our best to provide support, address new issues, and keep improving this software.
+If you have any questions/problems with PathogenTrack, feel free to leave an issue! We will try our best to provide support, address new issues, and keep improving this software.
