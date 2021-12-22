@@ -18,20 +18,22 @@ data to reduce the file size.
 Step 1: Install `PathogenTrack`
 -----------------------------------
 
-1 . Before installing `PathogenTrack`, dependencies must be installed previously, users are suggested to
+1 . Get `PathogenTrack`.
+```
+git clone git@github.com:ncrna/PathogenTrack.git
+```
+
+2 . Installing `PathogenTrack` and its dependencies, users are **strongly suggested** to
 use `conda` with the following command:
 
 ```
 conda env create -f environment.yml
 ```
 An environment named `PathogenTrack` will be created, and the dependencies will be installed too.
+Use ```conda activate PathogenTrack``` to activate PathogenTrack environment.
 
-2 . Get `PathogenTrack`.
-```
-git clone git@github.com:ncrna/PathogenTrack.git
-```
 
-3 . Prepare the host reference genome STAR index:
+3 . Prepare the host reference genome STAR index (users can change to another human genome release):
 ```
 wget ftp://ftp.ensembl.org/pub/release-101/fasta/homo_sapiens/dna/Homo_sapiens.GRCh38.dna.toplevel.fa.gz
 
@@ -47,7 +49,7 @@ STAR --runThreadN 16 --runMode genomeGenerate --genomeDir ./ \
      --sjdbOverhang 100
 ```
 
-4 . Prepare kraken2 database
+4 . Prepare kraken2 database (the folder is about 8 Gb):
 ```
 wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 
@@ -71,7 +73,9 @@ tar zxvf PathogenTrack/data/cellranger_out/barcodes.tsv.gz
 Step 3: Excute `cellranger` to get scRNA count matrix
 -----------------------------------------------------------
 
-1 . Single-cell RNA sequencing reads are first preprocessed with single-cell quantification software (such as `cellranger` or `alevin`) to obtain the gene quantification matrix and cell barcode file. Here, we use `cellranger` as an example.
+1 . Single-cell RNA sequencing reads are first preprocessed with single-cell quantification software 
+(such as `cellranger` or `alevin`) to obtain the gene quantification matrix and cell barcode file. 
+Here, we use `cellranger` as an example.
 ```
 cd PathogenTrack/data/
 
@@ -88,9 +92,9 @@ cp test_cellranger_out/outs/filtered_feature_bc_matrix/barcodes.tsv.gz .
 gzip -d barcodes.tsv.gz
 ```
 
-*Note*: Users can skip this step (step 3) by downloading the cellranger output as follows:
+*Note*: For tutorial, users can skip this step (step 3) by downloading the cellranger output as follows:
 ```
-cp PathogenTrack/data/cellranger_out/outs/filtered_feature_bc_matrix/barcodes.tsv.gz .
+cp PathogenTrack/data/cellranger_out/barcodes.tsv.gz .
 
 gzip -d barcodes.tsv.gz
 ```
@@ -144,8 +148,8 @@ python PathogenTrack.py trim --project_id test --barcode barcodes.tsv
 2 . Filter and attach cell barcodes to the header of read2
 ```
 python PathogenTrack.py extract --project_id test \
-                                --read1 test_S1_L000_R1_001.fastq.gz \
-                                --read2 test_S1_L000_R2_001.fastq.gz
+                                --read1 test_S1_L001_R1_001.fastq.gz \
+                                --read2 test_S1_L001_R2_001.fastq.gz
 ```
 
 3 . Filter out low-quality or low-complexity reads
@@ -168,3 +172,5 @@ python PathogenTrack.py classify --project_id test/ --kraken_db /path/to/minikra
 python PathogenTrack.py quant --project_id test
 ```
 
+If you encountered a problem while processing your data, don't hesitate to leave an issue. We will
+try our best to address the issue. Thank you for using PathogenTrack! 
