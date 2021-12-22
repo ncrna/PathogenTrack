@@ -71,7 +71,9 @@ First, we use cellranger to get scRNA-seq expression matrix and valid barcodes:
 ```sh
 cellranger count --id cellranger_out --transcriptom /path/to/cellranger_database/
 ```
-**Attention** Three files must be ready to run PathogenTrack: 1) the valid barcode.tsv file; 2) the raw scRNA-seq fastq file (xxx_R1.fastq.gz; xxx_R2.fastq.gz).
+**Attention** 
+
+Three files must be ready to run PathogenTrack: 1) the valid barcode.tsv file; 2) the raw scRNA-seq fastq file (xxx_R1.fastq.gz; xxx_R2.fastq.gz).
 
 Then we run PathogenTrack to identify and quantify pathogen expression at the single-cell level:
 
