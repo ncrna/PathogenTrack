@@ -64,13 +64,14 @@ wget ftp://ftp.ccb.jhu.edu/pub/data/kraken2_dbs/minikraken_8GB_202003.tgz
 tar zxf minikraken_8GB_202003.tgz
 ```
 
-## How to use PathogenTrack?
-Before running this tutorial, you should run `cellranger` or `alevin` to get the single cells' gene expression matrix. Here, we take the simulated 10X sequencing data as an example:
+## Run PathogenTrack
+Before running PathogenTrack, you should run `cellranger` or `alevin` to get the single cells' gene expression matrix. Here, we take the simulated 10X sequencing data as an example:
 
 First, we use cellranger to get scRNA-seq expression matrix and valid barcodes:
 ```sh
 cellranger count --id cellranger_out --transcriptom /path/to/cellranger_database/
 ```
+**Attention** Three files must be ready to run PathogenTrack: 1) the valid barcode.tsv file; 2) the raw scRNA-seq fastq file (xxx_R1.fastq.gz; xxx_R2.fastq.gz).
 
 Then we run PathogenTrack to identify and quantify pathogen expression at the single-cell level:
 
