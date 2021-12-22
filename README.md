@@ -73,6 +73,7 @@ cellranger count --id cellranger_out --transcriptom /path/to/cellranger_database
 ```
 
 Then we run PathogenTrack to identify and quantify pathogen expression at the single-cell level:
+
 (Users should change the '/path/to/' in the following command to the databases' real paths)
 ```sh
 conda activate PathogenTrack
