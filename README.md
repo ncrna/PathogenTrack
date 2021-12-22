@@ -10,7 +10,7 @@ PathogenTrack has been tested on various scRNA-seq datasets derived from simulat
 
 ### System Requirements
 
-PathogenTrack has been tested on Linux platform with CentOS 7 operation system. The RAM is 120 GB, with 40 computational threads.
+PathogenTrack has been tested on Linux platform with CentOS 7 and Mac platform with macOS 11.6.1.
 
 ## Installation
 
