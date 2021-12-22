@@ -5,9 +5,10 @@ channels:
   - defaults
 dependencies:
   - samtools=1.9
-  - star=2.7.5a
-  - python=3.6.10
-  - biopython=1.78
+  - star>2.5
+  - fastp
+  - python>3.6
+  - biopython
   - umi_tools=1.1.1
   - kraken2=2.1.1
   - pip
