@@ -22,11 +22,12 @@ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 bash Miniconda3-latest-Linux-x86_64.sh
 ```
 
-2 . Installing PathogenTrack.
+2 . Installing PathogenTrack and the dependencies.
 ```sh
 conda env create -f environment.yml
 ```
-Users can install the dependencies manually. The dependencies and test versions are listed below.
+Users are strongly sugguested to install these software with conda. 
+The dependencies and test versions are listed below.
 
 Package|Version
 --|:--:
@@ -72,15 +73,19 @@ cellranger count --id cellranger_out --transcriptom /path/to/cellranger_database
 ```
 
 Then we run PathogenTrack to identify and quantify pathogen expression at the single-cell level:
+(Users should change the '/path/to/' in the following command to the databases' real paths)
 ```sh
 conda activate PathogenTrack
-python PathogenTrack.py count --project_id PathogenTrack_out --pattern CCCCCCCCCCCCCCCCNNNNNNNNNN \
-                              --min_reads 10 --confidence 0.11 --star_index ~/database/STAR_index/ \
-                              --kraken_db ~/database/minikraken_8GB_20200312/ --barcode barcodes.tsv \
-                              --read1 simulation_S1_L001_R1_001.fastq.gz \
-                              --read2 simulation_S1_L001_R2_001.fastq.gz 
+PathogenTrack count --project_id PathogenTrack_out \
+                    --pattern CCCCCCCCCCCCCCCCNNNNNNNNNN \
+                    --min_reads 10 --confidence 0.11 \
+                    --star_index /path/to/STAR_index/ \
+                    --kraken_db /path/to/minikraken_8GB_20200312/ \
+                    --barcode barcodes.tsv \
+                    --read1 test_S1_L001_R1_001.fastq.gz \
+                    --read2 test_S1_L001_R2_001.fastq.gz 
 ```
-**IMPORTANT**: The Read 1 in the example is made up of 16 bp CB and 10 bp UMI, so the --pattern is *CCCCCCCCCCCCCCCCNNNNNNNNNN* (16C and 10N). Users must adjust the pattern with their own Read 1 accordingly.
+**IMPORTANT**: The Read 1 in the example is made up of 16 bp CB and 10 bp UMI, so the --pattern is *CCCCCCCCCCCCCCCCNNNNNNNNNN* (16C and 10N). Users must adjust the pattern with their own Read 1 accordingly. (for 10X Genomics scRNA-seq Chemistry Version 2: 16 bp CB and 10 bp UMI; for Version 3: 16 bp CB and 12 bp UMI)
 
 *Note:* It may take 4-6 hours to complete one sample, and it depends on the performance of computational resources and the size of the raw single-cell data.
 
