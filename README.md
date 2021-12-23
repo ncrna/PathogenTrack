@@ -5,7 +5,7 @@
 [![Conda Downloads](https://anaconda.org/bioconda/pathogentrack/badges/downloads.svg)](https://anaconda.org/bioconda/pathogentrack)
 [![Platform](https://img.shields.io/badge/platform-any-ec2eb4.svg)](https://github.com/ncrna/PathogenTrack)
 ```markdown
-![](https://komarev.com/ghpvc/?username=ncrna)
+<img src=https://komarev.com/ghpvc/?username=ncrna/>
 ```
 # PathogenTrack
 PathogenTrack is an unsupervised computational software that uses `unmapped single-cell RNAseq reads` to characterize `intracellular pathogens` at the single-cell level. It is a python-based script that can be used to identify and quantify intracellular pathogenic `viruses` and `bacteria` reads at the single-cell level.
