@@ -17,10 +17,13 @@ PathogenTrack has been tested on Linux platform with CentOS 7 and Mac platform w
 
 ### PathogenTrack can be installed in two steps:
 
-1 . Installing Miniconda on Linux Platform. For details, please refer to [Miniconda Installation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent).
+1 . Installing Miniconda on Linux/MacOS Platform. For details, please refer to [Miniconda Installation](https://conda.io/projects/conda/en/latest/user-guide/install/linux.html#install-linux-silent).
 ```sh
-wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh    # For Linux users
 bash Miniconda3-latest-Linux-x86_64.sh
+-----------------------------------------------------------------------------------------------
+wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh   # For MacOS users
+bash Miniconda3-latest-MacOSX-x86_64.sh
 ```
 
 2 . Installing PathogenTrack and the dependencies.
