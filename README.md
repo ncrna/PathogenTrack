@@ -5,7 +5,7 @@
 [![Conda Downloads](https://anaconda.org/bioconda/pathogentrack/badges/downloads.svg)](https://anaconda.org/bioconda/pathogentrack)
 [![Platform](https://img.shields.io/badge/platform-any-ec2eb4.svg)](https://github.com/ncrna/PathogenTrack)
 
-# PathogenTrack <img src="https://github.com/ncrna/PathogenTrack/blob/master/doc/PathogenTrack_logo.png" align="right" height=142 width=142/>
+# PathogenTrack <img src="https://github.com/ncrna/PathogenTrack/blob/master/doc/PathogenTrack_logo.png" align="right" height=142 width=164/>
 PathogenTrack is an unsupervised computational software that uses `unmapped single-cell RNAseq reads` to characterize `intracellular pathogens` at the single-cell level. It is a python-based script that can be used to identify and quantify intracellular pathogenic `viruses` and `bacteria` reads at the single-cell level.
 PathogenTrack has been tested on various scRNA-seq datasets derived from simulated and real datasets and performed robustly. The detailes are described in our paper [*`PathogenTrack and Yeskit: tools for identifying intracellular pathogens from single-cell RNA-sequencing datasets as illustrated by application to COVID-19`*](https://journal.hep.com.cn/fmd/EN/10.1007/s11684-021-0915-9).
 
