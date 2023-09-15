@@ -1,7 +1,6 @@
 [![Build Status](https://app.travis-ci.com/ncrna/PathogenTrack.svg?branch=master)](https://app.travis-ci.com/ncrna/PathogenTrack)
 [![The MIT License](https://img.shields.io/badge/license-MIT-green.svg)](https://github.com/ncrna/PathogenTrack/blob/master/LICENSE)
 [![PYPI](https://img.shields.io/pypi/v/pathogentrack.svg)](https://pypi.org/project/pathogentrack/)
-[![Conda](https://anaconda.org/bioconda/pathogentrack/badges/installer/conda.svg)](https://anaconda.org/bioconda/pathogentrack)
 [![Conda](https://anaconda.org/bioconda/pathogentrack/badges/version.svg)](https://anaconda.org/bioconda/pathogentrack)
 [![Conda Downloads](https://anaconda.org/bioconda/pathogentrack/badges/downloads.svg)](https://anaconda.org/bioconda/pathogentrack)
 [![Platform](https://img.shields.io/badge/platform-any-ec2eb4.svg)](https://github.com/ncrna/PathogenTrack)
